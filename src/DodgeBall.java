@@ -90,7 +90,7 @@ public class DodgeBall extends GraphicsProgram implements ActionListener {
 		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
 	
-	public static void main(String args[]) {
-		new DodgeBall().start();
-	}
+	//public static void main(String args[]) {
+	//	new DodgeBall().start();
+	//}
 }

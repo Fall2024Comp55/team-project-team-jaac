@@ -21,19 +21,25 @@ public class StartMenu extends Screen {
 
     private Void PlayButtonClicked(Button button)
     {
-        gg.displayScreen("level", null);
+        gg.displayScreen("Level", null);
         return null;
+    }
+    
+    private Void OptionsButtonClicked(Button button) // added this for Options menu
+    {
+    	gg.displayScreen("Options", null);
+    	return null;
     }
 
     private Void CreditsButtonClicked(Button button)
     {
-        gg.displayScreen("credits", null);
+        gg.displayScreen("Credits", null);
         return null;
     }
 
     private Void QuitButtonClicked(Button button)
     {
-        gg.displayScreen("quit", null);
+        gg.displayScreen("Quit", null);
         return null;
     }
 
@@ -41,7 +47,7 @@ public class StartMenu extends Screen {
 		gg.add((new Button("media/images/index/play.png", 397, 474)).clicked((Button b) -> { return PlayButtonClicked(b); }));
 		gg.add((new Button("media/images/index/sco.png", 397, 549)).clicked((Button b) -> { return PlayButtonClicked(b); }));
 		gg.add((new Button("media/images/index/cre.png", 397, 605)).clicked((Button b) -> { return CreditsButtonClicked(b); }));
-		gg.add((new Button("media/images/index/opt.png", 400, 679)).clicked((Button b) -> { return PlayButtonClicked(b); }));
+		gg.add((new Button("media/images/index/opt.png", 400, 679)).clicked((Button b) -> { return OptionsButtonClicked(b); })); //change made here to OptionsButtonClicked
 		gg.add((new Button("media/images/index/quit.png", 633, 679)).clicked((Button b) -> { return QuitButtonClicked(b); }));
     }
 

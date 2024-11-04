@@ -54,7 +54,6 @@ public  class CharacterSelect extends Screen{
     }
 	
 	private void drawButtons() {
-		//To-Do: create buttons on figma, will put them in media and implement draw buttons
-		//shortly
+		//To-Do: create buttons on Figma, will put them in media and implement draw buttons shortly
 	}
 }

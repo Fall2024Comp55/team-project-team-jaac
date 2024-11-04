@@ -18,7 +18,9 @@ public class LevelScreen extends Screen {
         image.setSize(1200, 800);
 		gg.add(image);
 		gg.add(new GImage("media/images/level/title.png", 224, 41));
-
+		gg.add(new GImage("media/images/level/level1updated.png", 350, 41));
+		gg.add(new GImage("media/images/level/level2updated.png", 350, 190));
+		gg.add(new GImage("media/images/level/level3updated.png", 350, 340));
     }
 
     private Void BackButtonClicked(Button button)

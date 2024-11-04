@@ -4,7 +4,7 @@ import acm.graphics.GImage;
 
 public class QuitScreen extends Screen {
 
-    private String name = "quit";
+    private String name = "Quit";
 
 	@Override
 	public void show(HashMap<String, Object> params) {

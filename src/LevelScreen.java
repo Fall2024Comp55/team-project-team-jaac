@@ -4,7 +4,7 @@ import acm.graphics.GImage;
 
 public class LevelScreen extends Screen {
 
-    private String name = "level";
+    private String name = "Level";
 
 	@Override
 	public void show(HashMap<String, Object> params) {

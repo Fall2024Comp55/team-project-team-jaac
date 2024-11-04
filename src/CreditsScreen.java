@@ -4,7 +4,7 @@ import acm.graphics.GImage;
 
 public class CreditsScreen extends Screen {
 
-    private String name = "credits";
+    private String name = "Credits";
 
 	@Override
 	public void show(HashMap<String, Object> params) {

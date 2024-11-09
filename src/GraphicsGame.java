@@ -23,6 +23,7 @@ public class GraphicsGame extends GraphicsProgram {
 			new CreditsScreen(),
 			new LevelScreen(),
 			new ScoreboardScreen(),
+			new PlayingScreen(),
 		
 		};
 	}
@@ -33,6 +34,7 @@ public class GraphicsGame extends GraphicsProgram {
 			if (screen.getName() == screenName) {
 				// deinit and init
 				if (currentScreen != null) currentScreen.deinit();
+				this.removeAll();
 				screen.init(this, params);
 				currentScreen = screen;
 				break;

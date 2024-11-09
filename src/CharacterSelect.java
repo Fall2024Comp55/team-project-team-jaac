@@ -2,7 +2,7 @@ import java.util.HashMap;
 
 import acm.graphics.GImage;
 
-public  class CharacterSelect extends Screen{
+public  class CharacterSelect extends Screen {
     private String name = "Select";
     private String character;
     

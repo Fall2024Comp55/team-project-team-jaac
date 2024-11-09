@@ -23,7 +23,7 @@ public class ScoreboardScreen extends Screen {
 
     private Void BackButtonClicked(Button button)
     {
-        gg.displayScreen("scoreboard", null);
+        gg.displayScreen("index", null);
         return null;
     }
 

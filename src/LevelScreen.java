@@ -5,9 +5,13 @@ import acm.graphics.GImage;
 public class LevelScreen extends Screen {
 
     private String name = "Level";
+    private String character;
 
 	@Override
 	public void show(HashMap<String, Object> params) {
+		// TODO: After the CharacterSelect is finished, uncomment this line:
+		//String character = (String) params.get("Character");
+		
 		drawBackground();
 		drawButtons();
 		drawStars();
@@ -32,6 +36,7 @@ public class LevelScreen extends Screen {
     	
     	HashMap<String, Object> params = new HashMap<String, Object>();
     	params.put("Level", level);
+    	params.put("Character", character);
     	gg.displayScreen("Playing",  params);
     	
     	return null;

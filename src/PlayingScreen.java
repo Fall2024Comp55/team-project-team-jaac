@@ -10,6 +10,7 @@ public class PlayingScreen extends Screen {
 	public void show(HashMap<String, Object> params) {
 		
 		int level = (int)params.get("Level");
+		String character = (String)params.get("Character");
 		System.out.println(level);
 		// TODO: draw something about the level
 		

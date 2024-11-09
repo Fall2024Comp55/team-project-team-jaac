@@ -21,7 +21,9 @@ public class GraphicsGame extends GraphicsProgram {
 			new StartMenu(),
 			new QuitScreen(),
 			new CreditsScreen(),
-			new LevelScreen()
+			new LevelScreen(),
+			new ScoreboardScreen(),
+		
 		};
 	}
 

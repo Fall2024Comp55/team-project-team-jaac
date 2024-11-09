@@ -42,10 +42,15 @@ public class StartMenu extends Screen {
         gg.displayScreen("Quit", null);
         return null;
     }
-
+    private Void ScoreboardButtonClicked(Button button)
+    {
+        gg.displayScreen("Scoreboard", null);
+        return null;
+    }
+    
     private void drawButtons() {
 		gg.add((new Button("media/images/index/play.png", 397, 474)).clicked((Button b) -> { return PlayButtonClicked(b); }));
-		gg.add((new Button("media/images/index/sco.png", 397, 549)).clicked((Button b) -> { return PlayButtonClicked(b); }));
+		gg.add((new Button("media/images/index/sco.png", 397, 549)).clicked((Button b) -> { return ScoreboardButtonClicked(b); }));
 		gg.add((new Button("media/images/index/cre.png", 397, 605)).clicked((Button b) -> { return CreditsButtonClicked(b); }));
 		gg.add((new Button("media/images/index/opt.png", 400, 679)).clicked((Button b) -> { return OptionsButtonClicked(b); })); //change made here to OptionsButtonClicked
 		gg.add((new Button("media/images/index/quit.png", 633, 679)).clicked((Button b) -> { return QuitButtonClicked(b); }));

@@ -24,7 +24,7 @@ public class LevelScreen extends Screen {
     }
 
     private Void BackButtonClicked(Button button) {
-        gg.displayScreen("index", null);
+        gg.displayScreen("Select", null);
         return null;
     }
     

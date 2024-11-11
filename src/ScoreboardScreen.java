@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import acm.graphics.GImage;
+import acm.graphics.GLabel;
 
 public class ScoreboardScreen extends Screen {
 
@@ -32,6 +33,25 @@ public class ScoreboardScreen extends Screen {
 		gg.add((new Button("media/images/scoreboard/back2.png", 252+275, 673)).clicked((Button b) -> { return BackButtonClicked(b); }));
     }
 
+    private void displayScores() {
+    	PlayerData playerdata = PlayerData.getInstance();
+    	int yPosition = 150; 
+    	
+    	for(int level = 1; level <=3; level++) {
+    		PlayerData.LevelScore score = playerdata.getBestScore(level);
+    		
+    		if(score != null) {
+    			String timeText = String.valueOf(score.timeMs);
+    			String carsPassedText = String.valueOf(score.carPassed);
+    			
+    			GLabel timeLabel = new GLabel(timeText, 400, yPosition); // will need to adjust later
+    			GLabel carsPassedLabel = new GLabel(carsPassedText, 500, yPosition);
+    			
+    			gg.add(timeLabel);
+    			gg.add(carsPassedLabel);
+    		}
+    	}
+    }
 
     @Override
     public String getName() {

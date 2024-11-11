@@ -39,6 +39,10 @@ public  class Select extends Screen {
 	
 	private void drawButtons() {
 		gg.add((new Button("media/images/level/back.png", 40, 34)).clicked((Button b) -> { return BackButtonClicked(b); }));
+		
+		//Select Title
+		gg.add((new Button("media/images/select/Select-Title.png", 205, 39)).clicked((Button b) -> { return null; }));
+
 		//Steve assets
 		gg.add((new Button("media/images/select/Steve.png", 93, 153)).clicked((Button b) -> { return CharacterClicked(b, "Steve"); }));
 		

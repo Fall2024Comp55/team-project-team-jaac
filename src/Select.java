@@ -39,9 +39,9 @@ public  class Select extends Screen {
 	
 	private void drawButtons() {
 		gg.add((new Button("media/images/level/back.png", 40, 34)).clicked((Button b) -> { return BackButtonClicked(b); }));
-		gg.add((new Button("media/images/select/Steve.png", 236, 153)).clicked((Button b) -> { return CharacterClicked(b, "Steve"); }));
-		gg.add((new Button("media/images/select/Gary.png", 413, 153)).clicked((Button b) -> { return CharacterClicked(b, "Steve"); }));
-		gg.add((new Button("media/images/select/Nate.png", 590, 153)).clicked((Button b) -> { return CharacterClicked(b, "Nate"); }));
+		gg.add((new Button("media/images/select/Steve.png", 93, 153)).clicked((Button b) -> { return CharacterClicked(b, "Steve"); }));
+		gg.add((new Button("media/images/select/Gary.png", 447, 153)).clicked((Button b) -> { return CharacterClicked(b, "Gary"); }));
+		gg.add((new Button("media/images/select/Nate.png", 798, 153)).clicked((Button b) -> { return CharacterClicked(b, "Nate"); }));
 
 	}
 	

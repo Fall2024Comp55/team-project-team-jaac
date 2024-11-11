@@ -21,7 +21,7 @@ public class StartMenu extends Screen {
 
     private Void PlayButtonClicked(Button button)
     {
-        gg.displayScreen("Level", null);
+        gg.displayScreen("Select", null);
         return null;
     }
     

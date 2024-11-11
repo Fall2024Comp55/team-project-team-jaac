@@ -2,13 +2,9 @@ import java.util.HashMap;
 
 import acm.graphics.GImage;
 
-public  class CharacterSelect extends Screen {
+public  class Select extends Screen {
     private String name = "Select";
     
-	@Override
-	public String getName() {
-		return name;
-	}
 
 	@Override
 	protected void show(HashMap<String, Object> params) {
@@ -18,13 +14,14 @@ public  class CharacterSelect extends Screen {
 	
 	private void drawBackground() {
         GImage image;
-        image = new GImage("media/images/index/bg.png", 0, 0);
+        image = new GImage("media/images/credits/bg.png", 0, 0);
         image.setSize(1200, 800);
 		gg.add(image);
     }
 
 	// Will take players to the level select screen once select their character,
 	// as well as update the character value
+	
 	private Void CharacterClicked(Button button, String character) {
 		// character is Steve, Gary or Nate
 		// deliver the character to levelScreen
@@ -42,10 +39,14 @@ public  class CharacterSelect extends Screen {
 	
 	private void drawButtons() {
 		gg.add((new Button("media/images/level/back.png", 40, 34)).clicked((Button b) -> { return BackButtonClicked(b); }));
+		gg.add((new Button("media/images/select/Steve.png", 236, 153)).clicked((Button b) -> { return CharacterClicked(b, "Steve"); }));
+		gg.add((new Button("media/images/select/Gary.png", 413, 153)).clicked((Button b) -> { return CharacterClicked(b, "Steve"); }));
+		gg.add((new Button("media/images/select/Nate.png", 590, 153)).clicked((Button b) -> { return CharacterClicked(b, "Nate"); }));
 
-		//To-Do: create buttons on Figma, will put them in media and implement draw buttons shortly
-		// parameters can be delivered between function or screen, please see "LevelScreen"
-		//gg.add((new Button("media/images/select/Steve.png", 236, 153)).clicked((Button b) -> { return LevelButtonClicked(b, "Steve"); }));
-
+	}
+	
+	@Override
+	public String getName() {
+		return name;
 	}
 }

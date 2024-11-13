@@ -44,13 +44,13 @@ public  class Select extends Screen {
 		gg.add((new Button("media/images/select/Select-Title.png", 205, 39)).clicked((Button b) -> { return null; }));
 
 		//Steve assets
-		gg.add((new Button("media/images/select/Steve.png", 93, 153)).clicked((Button b) -> { return CharacterClicked(b, "Steve"); }));
+		gg.add((new Button("media/images/select/Steve1.png", 93, 153)).clicked((Button b) -> { return CharacterClicked(b, "Steve"); }));
 		
 		//Gary assets
-		gg.add((new Button("media/images/select/Gary.png", 447, 153)).clicked((Button b) -> { return CharacterClicked(b, "Gary"); }));
+		gg.add((new Button("media/images/select/Gary1.png", 447, 153)).clicked((Button b) -> { return CharacterClicked(b, "Gary"); }));
 		
 		//Nate assets
-		gg.add((new Button("media/images/select/Nate.png", 798, 153)).clicked((Button b) -> { return CharacterClicked(b, "Nate"); }));
+		gg.add((new Button("media/images/select/Nate1.png", 798, 153)).clicked((Button b) -> { return CharacterClicked(b, "Nate"); }));
 
 	}
 	

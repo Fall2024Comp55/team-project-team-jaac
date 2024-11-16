@@ -9,8 +9,7 @@ public class LevelScreen extends Screen {
 
 	@Override
 	public void show(HashMap<String, Object> params) {
-		// TODO: After the CharacterSelect is finished, uncomment this line:
-		//String character = (String) params.get("Character");
+		character = (String) params.get("Character");
 		
 		drawBackground();
 		drawButtons();
@@ -75,7 +74,6 @@ public class LevelScreen extends Screen {
     
     private void drawLocks() {
     	for (int level = 1; level <= 3; level++) {
-    		PlayerData.LevelScore score = PlayerData.getInstance().getBestScore(level);
     		if (level > 1 && (PlayerData.getInstance().getBestScore(level - 1) == null)) {
     			int y = 130 + (level - 1) * 195;
             	gg.add(new GImage("media/images/level/lock.png", 215, y));
@@ -88,5 +86,11 @@ public class LevelScreen extends Screen {
     public String getName() {
         return name;
     }
+
+	@Override
+	protected void hide() {
+		// nothing to do
+		
+	}
 
 }

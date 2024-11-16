@@ -39,4 +39,10 @@ public class CreditsScreen extends Screen {
         return name;
     }
 
+	@Override
+	protected void hide() {
+		// noting to do
+		
+	}
+
 }

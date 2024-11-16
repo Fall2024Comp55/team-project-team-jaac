@@ -27,11 +27,12 @@ public abstract class Screen implements MouseListener {
 	public void deinit()
 	{
 		gg.getGCanvas().removeMouseListener(this);
+		hide();
 	}
 
 	public abstract String getName();
 
 	protected abstract void show(HashMap<String, Object> params);
-
+	protected abstract void hide();
 
 }

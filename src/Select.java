@@ -62,4 +62,10 @@ public  class Select extends Screen {
 	public String getName() {
 		return name;
 	}
+	
+	@Override
+	protected void hide() {
+		// // noting to do
+		
+	}
 }

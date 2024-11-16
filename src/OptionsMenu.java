@@ -1,10 +1,14 @@
 import java.util.HashMap;
+import javax.sound.sampled.*;
+import java.io.File;
+import java.io.IOException;
 
 import acm.graphics.GImage;
 import acm.graphics.GLabel;
 import acm.graphics.GRect;
 import acm.graphics.GObject;
 import java.awt.Color;
+
 
 public class OptionsMenu extends Screen{
 	private String name = "Options";
@@ -13,14 +17,49 @@ public class OptionsMenu extends Screen{
     private GLabel volumeValue;
     private GRect volumeBar;
     private int volume = 100; // Default volume set to 100
+    
+    private Clip clip; // For audio playback
+    private FloatControl volumeControl; // For volume adjustment
 
     @Override
     public void show(HashMap<String, Object> params) {
+    	playBackgroundMusic();
         drawBackground();
         drawVolumeControl();
         drawControls();
         drawBackButton();
     }
+    
+    private void playBackgroundMusic() {
+        try {
+            File soundFile = new File("/media/Background Music/MenuBackgroundMusic.mp3"); //implementing background Music
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundFile);
+            clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            
+            // Get volume control
+            volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            setVolume(volume); // Set initial volume
+            
+            clip.loop(Clip.LOOP_CONTINUOUSLY); // Loop the background music
+            clip.start();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void setVolume(int volume) {
+        if (volumeControl != null) {
+            float min = volumeControl.getMinimum();
+            float max = volumeControl.getMaximum();
+            float range = max - min;
+
+            
+            float newVolume = min + (range * volume / 100);
+            volumeControl.setValue(newVolume);
+        }
+    }
+            
 
     private void drawBackground() {
         GImage background = new GImage("media/images/credits/bg.png", 0, 0); 
@@ -64,7 +103,7 @@ public class OptionsMenu extends Screen{
         if (volume > 0) {
             volume -= 10;
             volumeValue.setLabel(String.valueOf(volume));
-            //volumeBar.setSize(volume * 3, 20); // Scale the bar size with volume
+            
         }
     }
 
@@ -72,7 +111,7 @@ public class OptionsMenu extends Screen{
         if (volume < 100) {
             volume += 10;
             volumeValue.setLabel(String.valueOf(volume));
-            //volumeBar.setSize(volume * 3, 20); // Scale the bar size with volume
+            
         }
     }
 

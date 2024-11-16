@@ -32,7 +32,7 @@ public class OptionsMenu extends Screen{
     
     private void playBackgroundMusic() {
         try {
-            File soundFile = new File("/media/Background Music/MenuBackgroundMusic.mp3"); //implementing background Music
+            File soundFile = new File("media/Background Music/MenuBackgroundMusic.wav"); //implementing background Music
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundFile);
             clip = AudioSystem.getClip();
             clip.open(audioStream);
@@ -103,6 +103,7 @@ public class OptionsMenu extends Screen{
         if (volume > 0) {
             volume -= 10;
             volumeValue.setLabel(String.valueOf(volume));
+            setVolume(volume);
             
         }
     }
@@ -111,7 +112,7 @@ public class OptionsMenu extends Screen{
         if (volume < 100) {
             volume += 10;
             volumeValue.setLabel(String.valueOf(volume));
-            
+            setVolume(volume);
         }
     }
 
@@ -173,9 +174,13 @@ public class OptionsMenu extends Screen{
             return null;
         }));
         gg.add((new Button("media/images/credits/back2.png", 252+275, 544)).clicked((Button b) -> { backToMainMenu(); return null;}));
+        
     }
 
     private Void backToMainMenu() {
+    	if (clip != null) {
+    		clip.stop();
+    	}
         gg.displayScreen("index", null); // Return to Start Menu
         return null;
     }

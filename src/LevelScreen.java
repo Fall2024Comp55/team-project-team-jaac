@@ -10,11 +10,11 @@ public class LevelScreen extends Screen {
 	@Override
 	public void show(HashMap<String, Object> params) {
 		character = (String) params.get("Character");
-		
 		drawBackground();
 		drawButtons();
 		drawStars();
 		drawLocks();
+		MusicManager.getInstance().stopMusic();
 	}
 
     private void drawBackground() {
@@ -37,6 +37,7 @@ public class LevelScreen extends Screen {
     	params.put("Level", level);
     	params.put("Character", character);
     	gg.displayScreen("Playing",  params);
+    	
     	
     	return null;
     }

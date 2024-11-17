@@ -85,7 +85,20 @@ public class PlayingScreen extends Screen {
         timer.start();
     }
     
-    //checks if level is complete based it off the time right now but we will need to change this
+    private void checkLevelComplete() { //check if level is complete 
+    	//add other things to check when level complete 
+
+    	if (isLevelComplete) {
+    		timer.stop();
+    		HashMap<String, Object> params = new HashMap<>();
+    		params.put("Level", level);
+    		params.put("Character", character);
+    		gg.displayScreen("index", params);
+    	}
+    }
+    
+    
+  /*  //checks if level is complete based it off the time right now but we will need to change this
     private void checkLevelComplete() { 
        
         double elapsedTime = (System.currentTimeMillis() - startTimeMs) / 1000.0;
@@ -98,7 +111,7 @@ public class PlayingScreen extends Screen {
             break;
             case 3: timeLimit = 60; 
             break;
-        }
+        } 
 
         if (elapsedTime >= timeLimit) {
             timer.stop();
@@ -111,7 +124,7 @@ public class PlayingScreen extends Screen {
             gg.displayScreen("Complete", params);
         }
     }
-    
+ */   
 
     private void updateAnimation() {
         long timerDelayMs = System.currentTimeMillis() - lastTimeMs;

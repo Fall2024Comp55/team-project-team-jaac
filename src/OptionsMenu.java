@@ -18,47 +18,47 @@ public class OptionsMenu extends Screen{
     private GRect volumeBar;
     private int volume = 100; // Default volume set to 100
     
-    private Clip clip; // For audio playback
-    private FloatControl volumeControl; // For volume adjustment
+    //private Clip clip; // For audio playback
+    //private FloatControl volumeControl; // For volume adjustment
 
     @Override
     public void show(HashMap<String, Object> params) {
-    	playBackgroundMusic();
+        volume = MusicManager.getInstance().getVolume();
         drawBackground();
         drawVolumeControl();
         drawControls();
         drawBackButton();
     }
     
-    private void playBackgroundMusic() {
-        try {
-            File soundFile = new File("media/Background Music/MenuBackgroundMusic.wav"); //implementing background Music
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundFile);
-            clip = AudioSystem.getClip();
-            clip.open(audioStream);
-            
-            // Get volume control
-            volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            setVolume(volume); // Set initial volume
-            
-            clip.loop(Clip.LOOP_CONTINUOUSLY); // Loop the background music
-            clip.start();
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    private void setVolume(int volume) {
-        if (volumeControl != null) {
-            float min = volumeControl.getMinimum();
-            float max = volumeControl.getMaximum();
-            float range = max - min;
-
-            
-            float newVolume = min + (range * volume / 100);
-            volumeControl.setValue(newVolume);
-        }
-    }
+//    private void playBackgroundMusic() {
+//        try {
+//            File soundFile = new File("media/Background Music/MenuBackgroundMusic.wav"); //implementing background Music
+//            AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundFile);
+//            clip = AudioSystem.getClip();
+//            clip.open(audioStream);
+//            
+//            // Get volume control
+//            volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+//            setVolume(volume); // Set initial volume
+//            
+//            clip.loop(Clip.LOOP_CONTINUOUSLY); // Loop the background music
+//            clip.start();
+//        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//    
+//    private void setVolume(int volume) {
+//        if (volumeControl != null) {
+//            float min = volumeControl.getMinimum();
+//            float max = volumeControl.getMaximum();
+//            float range = max - min;
+//
+//            
+//            float newVolume = min + (range * volume / 100);
+//            volumeControl.setValue(newVolume);
+//        }
+//    }
             
 
     private void drawBackground() {
@@ -103,7 +103,8 @@ public class OptionsMenu extends Screen{
         if (volume > 0) {
             volume -= 10;
             volumeValue.setLabel(String.valueOf(volume));
-            setVolume(volume);
+            MusicManager.getInstance().setVolume(volume); // Update volume in MusicManager
+            volumeValue.setLabel(String.valueOf(volume));
             
         }
     }
@@ -112,7 +113,8 @@ public class OptionsMenu extends Screen{
         if (volume < 100) {
             volume += 10;
             volumeValue.setLabel(String.valueOf(volume));
-            setVolume(volume);
+            MusicManager.getInstance().setVolume(volume); 
+            volumeValue.setLabel(String.valueOf(volume));
         }
     }
 
@@ -178,9 +180,6 @@ public class OptionsMenu extends Screen{
     }
 
     private Void backToMainMenu() {
-    	if (clip != null) {
-    		clip.stop();
-    	}
         gg.displayScreen("index", null); // Return to Start Menu
         return null;
     }

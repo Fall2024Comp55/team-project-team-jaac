@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class MusicManager {
 	private static MusicManager instance; // Singleton instance
-    private Clip clip;
+    public Clip clip; // made public
     private FloatControl volumeControl;
     private int volume = 100;
 

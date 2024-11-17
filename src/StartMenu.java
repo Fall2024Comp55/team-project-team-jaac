@@ -8,6 +8,7 @@ public class StartMenu extends Screen {
 
 	@Override
 	public void show(HashMap<String, Object> params) {
+		MusicManager.getInstance().playMusic(); //play music
 		drawBackground();
 		drawButtons();
 	}

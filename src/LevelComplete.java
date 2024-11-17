@@ -34,7 +34,7 @@ public class LevelComplete extends Screen {
 
     }
 	
-	 private String scores() {
+/*	 private String scores() {
 	        int points = 0;
 	        points += health * 3;
 	        if (completionTime < 30) points += 3;
@@ -42,7 +42,7 @@ public class LevelComplete extends Screen {
 	        else if (completionTime < 60) points += 1;
 	        return character;
 	        
-	 } 
+	 } */
 
     private Void BackButtonClicked(Button button)
     {

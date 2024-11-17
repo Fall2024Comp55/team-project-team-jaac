@@ -27,6 +27,7 @@ public class PlayingScreen extends Screen {
     private int landscapeY;
     private GCanvas road;
     private ArrayList<Vehicle> vehicles;
+    private boolean isLevelComplete = false; 
 
     @Override
     public void show(HashMap<String, Object> params) {
@@ -82,7 +83,18 @@ public class PlayingScreen extends Screen {
         });
         timer.start();
     }
-
+    
+    private void checkLevelComplete() { //check if level is complete 
+    	//add other things to check when level complete 
+    	
+    	if (isLevelComplete) {
+    		timer.stop();
+    		HashMap<String, Object> params = new HashMap<>();
+    		params.put("Level", level);
+    		params.put("Character", character);
+    		gg.displayScreen("index", params);
+    	}
+    }
 
     private void updateAnimation() {
         long timerDelayMs = System.currentTimeMillis() - lastTimeMs;
@@ -136,6 +148,7 @@ public class PlayingScreen extends Screen {
         }
         this.landscape.setLocation(0, landscapeY);
 
+        checkLevelComplete();
     }
 
     private void drawBackground() {

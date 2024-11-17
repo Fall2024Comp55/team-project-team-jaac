@@ -14,7 +14,7 @@ public class LevelScreen extends Screen {
 		drawButtons();
 		drawStars();
 		drawLocks();
-		MusicManager.getInstance().stopMusic();
+		
 	}
 
     private void drawBackground() {

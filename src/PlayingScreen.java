@@ -35,9 +35,12 @@ public class PlayingScreen extends Screen {
         character = (String) params.get("Character");
         levelInfo = LevelInfo.build(level);
         vehicles = new ArrayList<Vehicle>();
-
+        
+        
+        MusicManager.getInstance().stopMusic(); //stop music once the player enters gameplay
         drawBackground();
         drawButtons();
+        
 
         // Generated road
         GImage road = new GImage("media/images/playing/road.png");

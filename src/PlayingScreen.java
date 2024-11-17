@@ -27,8 +27,10 @@ public class PlayingScreen extends Screen {
     private int landscapeY;
     private GCanvas road;
     private ArrayList<Vehicle> vehicles;
-    private boolean isLevelComplete = false; 
+    
     private long startTimeMs;
+    private boolean isLevelComplete = false; 
+  
 
     @Override
     public void show(HashMap<String, Object> params) {
@@ -38,6 +40,7 @@ public class PlayingScreen extends Screen {
         levelInfo = LevelInfo.build(level);
         vehicles = new ArrayList<Vehicle>();
         
+        startTimeMs = System.currentTimeMillis();
         
         MusicManager.getInstance().stopMusic(); //stop music once the player enters gameplay
         drawBackground();
@@ -85,46 +88,33 @@ public class PlayingScreen extends Screen {
         timer.start();
     }
     
-    private void checkLevelComplete() { //check if level is complete 
-    	//add other things to check when level complete 
+      //checks if level is complete based it off the time right now but we will need to change this
+      private void checkLevelComplete() { 
+         
+          double elapsedTime = (System.currentTimeMillis() - startTimeMs) / 1000.0;
+          
+          int timeLimit = 0;
+          switch (level) {
+              case 1: timeLimit = 30; 
+              break;
+              case 2: timeLimit = 45; 
+              break;
+              case 3: timeLimit = 60; 
+              break;
+          } 
 
-    	if (isLevelComplete) {
-    		timer.stop();
-    		HashMap<String, Object> params = new HashMap<>();
-    		params.put("Level", level);
-    		params.put("Character", character);
-    		gg.displayScreen("index", params);
-    	}
-    }
+          if (elapsedTime >= timeLimit) {
+              timer.stop();
+              isLevelComplete = true;
+
+              HashMap<String, Object> params = new HashMap<>();
+              params.put("Level", level);
+              params.put("Character", character);
+              params.put("Time", elapsedTime);
+              gg.displayScreen("Complete", params);
+          }
+      }
     
-    
-  /*  //checks if level is complete based it off the time right now but we will need to change this
-    private void checkLevelComplete() { 
-       
-        double elapsedTime = (System.currentTimeMillis() - startTimeMs) / 1000.0;
-        
-        int timeLimit = 0;
-        switch (level) {
-            case 1: timeLimit = 30; 
-            break;
-            case 2: timeLimit = 45; 
-            break;
-            case 3: timeLimit = 60; 
-            break;
-        } 
-
-        if (elapsedTime >= timeLimit) {
-            timer.stop();
-            isLevelComplete = true;
-
-            HashMap<String, Object> params = new HashMap<>();
-            params.put("Level", level);
-            params.put("Character", character);
-            params.put("Time", elapsedTime);
-            gg.displayScreen("Complete", params);
-        }
-    }
- */   
 
     private void updateAnimation() {
         long timerDelayMs = System.currentTimeMillis() - lastTimeMs;

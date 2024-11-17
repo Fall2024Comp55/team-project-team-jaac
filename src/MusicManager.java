@@ -24,6 +24,25 @@ private MusicManager() {
         e.printStackTrace();
     }
 }
+public static MusicManager getInstance() {
+    if (instance == null) {
+        instance = new MusicManager();
+    }
+    return instance;
+}
+
+public void playMusic() {
+    if (clip != null && !clip.isRunning()) {
+        clip.loop(Clip.LOOP_CONTINUOUSLY);
+        clip.start();
+    }
+}
+
+public void stopMusic() {
+    if (clip != null && clip.isRunning()) {
+        clip.stop();
+    }
+}
 
 public void setVolume(int volume) {
     this.volume = volume;
@@ -37,6 +56,9 @@ public void setVolume(int volume) {
     }
 }
 
+public int getVolume() {
+    return volume;
+}
 
 
 }

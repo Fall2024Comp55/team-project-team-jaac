@@ -5,7 +5,8 @@ import java.util.HashMap;
 // Use this class:
 //   PlayerData.getInstance().method();
 public class PlayerData {
-
+	
+	
     public class LevelScore {
         public int star;
         public int timeMs;

@@ -68,6 +68,13 @@ public class PlayingScreen extends Screen {
         g.dispose();
         this.landscape = new GImage(landscape);
         this.road.add(this.landscape, 0, 0);
+        
+        //level 2 images 
+        if (level == 2) {
+            GImage additionalImage = new GImage("media/images/playing/Level2ability.png"); 
+            additionalImage.setLocation(250, 33); 
+            gg.getGCanvas().add(additionalImage); 
+        }
 
         // init vehicle
         for (int i = 0; i < levelInfo.laneX.length; i++) {

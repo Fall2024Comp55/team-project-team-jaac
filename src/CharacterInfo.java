@@ -3,6 +3,7 @@ import acm.graphics.GImage;
 enum Character {
 	Steve, Gary, Nate
 }
+
 public class CharacterInfo {
 	private int health;
 	private Character character;

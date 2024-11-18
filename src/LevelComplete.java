@@ -46,11 +46,11 @@ public class LevelComplete extends Screen {
 
     private Void BackButtonClicked(Button button)
     {
-        gg.displayScreen("Index", null);
+        gg.displayScreen("index", null);
         return null;
-    }
+    } 
 
-    private Void NextButtonClicked(Button  button) {
+    private Void NextButtonClicked(Button button) {
     	
     	if (LevelInfo.build(level + 1) != null) {
     	HashMap<String, Object> params = new HashMap<>();
@@ -65,7 +65,7 @@ public class LevelComplete extends Screen {
     private void drawButtons() {
 		gg.add((new Button("media/images/levelcomplete/back.png", 40, 34)).clicked((Button b) -> {  return BackButtonClicked(b); }));
 		gg.add((new Button("media/images/levelcomplete/back2.png", 418, 525)).clicked((Button b) -> { return BackButtonClicked(b); }));
-		//gg.add((new Button("media/images/Complete/NextButton.png", 252+275, 544)).clicked((Button b) -> { return NextButtonClicked(b); }));
+		//gg.add((new Button("media/images/levelcomplete/NextButton.png", 252+275, 544)).clicked((Button b) -> { return NextButtonClicked(b); }));
 		//gg.add((new Button("media/images/levelcomplete/Frame.png", 629, 525)).clicked((Button b) -> { return NextButtonClicked(b); }));
 		
 		if (LevelInfo.build(level + 1) != null) {

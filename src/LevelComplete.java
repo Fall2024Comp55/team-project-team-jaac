@@ -28,7 +28,6 @@ public class LevelComplete extends Screen {
 		drawEachLevelComplete();
 		drawLevelCompleteTitle();
 		drawButtons();
-		
 	}
 	
 	private void drawBackground() {
@@ -36,7 +35,6 @@ public class LevelComplete extends Screen {
         image = new GImage("media/images/levelcomplete/bg.png", 0, 0);
         image.setSize(1200, 800);
 		gg.add(image);
-
     }
 	
 	private void drawEachLevelComplete() {
@@ -55,10 +53,9 @@ public class LevelComplete extends Screen {
 				levelimage = new GImage("media/images/levelcomplete/Level3complete.png", imageX, imageY);
 				break;
 			}		
-				gg.add(levelimage);
-				
+				gg.add(levelimage);	
 		}
-	
+
 	
 /*	 private String scores() {
 	        int points = 0;
@@ -89,16 +86,25 @@ public class LevelComplete extends Screen {
     } 
     
     private void drawButtons() {
-		gg.add((new Button("media/images/levelcomplete/back.png", 40, 34)).clicked((Button b) -> {  return BackButtonClicked(b); }));
-		gg.add((new Button("media/images/levelcomplete/back2.png", 418, 525)).clicked((Button b) -> { return BackButtonClicked(b); }));
+		gg.add((new Button("media/images/levelcomplete/back.png", 40, 34))
+				.clicked((Button b) -> {  return BackButtonClicked(b); }));
 		
-		if (LevelInfo.build(level + 1) != null) {
+		if (level == 3) {
+			gg.add((new Button("media/images/levelcomplete/back2.png", 257, 361)) //might need to adjust this later 
+					.clicked((Button b) -> { return BackButtonClicked(b); }));
+		} else {
+			gg.add((new Button("media/images/levelcomplete/back2.png", 418, 525))
+					.clicked((Button b) -> { return BackButtonClicked(b); }));
+		
+		 if (level == 1 || level == 2)  {
 	            gg.add((new Button("media/images/levelcomplete/NextButton.png", 629, 525))
 	            		.clicked((Button b) -> { return NextButtonClicked(b); })); 
 	            
-	        gg.add((new Button("media/images/levelcomplete/Frame.png", 658, 532)).clicked((Button b) -> { return NextButtonClicked(b); }));
+	        gg.add((new Button("media/images/levelcomplete/Frame.png", 658, 532))
+	        		.clicked((Button b) -> { return NextButtonClicked(b); }));
 	    }
     }
+ }		
     
     
     @Override

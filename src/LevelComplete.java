@@ -65,12 +65,12 @@ public class LevelComplete extends Screen {
     private void drawButtons() {
 		gg.add((new Button("media/images/levelcomplete/back.png", 40, 34)).clicked((Button b) -> {  return BackButtonClicked(b); }));
 		gg.add((new Button("media/images/levelcomplete/back2.png", 418, 525)).clicked((Button b) -> { return BackButtonClicked(b); }));
-		//gg.add((new Button("media/images/levelcomplete/NextButton.png", 252+275, 544)).clicked((Button b) -> { return NextButtonClicked(b); }));
-		//gg.add((new Button("media/images/levelcomplete/Frame.png", 629, 525)).clicked((Button b) -> { return NextButtonClicked(b); }));
 		
 		if (LevelInfo.build(level + 1) != null) {
 	            gg.add((new Button("media/images/levelcomplete/NextButton.png", 629, 525))
 	            		.clicked((Button b) -> { return NextButtonClicked(b); })); 
+	            
+	        gg.add((new Button("media/images/levelcomplete/Frame.png", 658, 532)).clicked((Button b) -> { return NextButtonClicked(b); }));
 	    }
     }
     

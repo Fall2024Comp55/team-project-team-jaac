@@ -10,7 +10,7 @@ public class LevelComplete extends Screen {
     private LevelInfo levelInfo;
     private String character;
     private double completionTime;
-    private int health;
+    //private int health;
     
 	@Override
 	public void show(HashMap<String, Object> params) {
@@ -22,6 +22,7 @@ public class LevelComplete extends Screen {
 		
 		drawBackground();
 		drawButtons();
+		drawEachLevelComplete();
 	}
 
 	private void drawBackground() {
@@ -33,6 +34,26 @@ public class LevelComplete extends Screen {
 		gg.add(new GImage("media/images/levelcomplete/LevelCompleteTitle.png", 398, 137));
 
     }
+	
+	private void drawEachLevelComplete() {
+		int imageX = 275;
+		int imageY = 160;
+				
+		GImage levelimage = null;
+		switch(level) {
+			case 1: 
+				levelimage = new GImage("media/images/levelcomplete/LevelComplete.png", imageX, imageY);
+				break;
+			case 2: 
+				levelimage = new GImage("media/images/levelcomplete/Level2complete.png", imageX, imageY);
+				break;
+			case 3: 
+				levelimage = new GImage("media/images/levelcomplete/Level3complete.png", imageX, imageY);
+				break;
+			}		
+				gg.add(levelimage);
+				
+		}
 	
 /*	 private String scores() {
 	        int points = 0;

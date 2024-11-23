@@ -53,7 +53,7 @@ public class PlayingScreen extends Screen implements KeyListener {
         passedVehicleCount = 0;
         lastTakingUpLineStartTimeMs = -1;
 
-        MusicManager.getInstance().stopMusic(); //stop music once the player enters gameplay
+        MusicManager.getInstance().stopMusic(); //stop background music once the player enters gameplay
         drawBackground();
         drawButtons();
 
@@ -271,8 +271,11 @@ public class PlayingScreen extends Screen implements KeyListener {
     }
 
 	@Override
-	protected void hide() {
-		timer.stop();
+	protected void hide() { //Ensure that timer.stop() is always called when the screen is hidden or gameplay ends
+		if(timer != null) { // if statement added for the timer
+			timer.stop();
+		}
+		
         gg.getGCanvas().remove(road);
         gg.getGCanvas().removeKeyListener(this);
 	}

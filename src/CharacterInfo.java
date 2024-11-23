@@ -39,7 +39,7 @@ public class CharacterInfo {
 		return health;
 	}
 
-	private void setHealth(int health) {
+	public void setHealth(int health) {
 		this.health = health;
 	}
 

@@ -32,6 +32,7 @@ public class PlayingScreen extends Screen implements KeyListener {
     private GCanvas road;
     private ArrayList<Vehicle> vehicles;
     private int passedVehicleCount;
+    private ArrayList<GImage> healthImages;
 
     private long lastTakingUpLineStartTimeMs;
     private int lastLane;
@@ -52,6 +53,16 @@ public class PlayingScreen extends Screen implements KeyListener {
         MusicManager.getInstance().stopMusic(); //stop music once the player enters gameplay
         drawBackground();
         drawButtons();
+
+        // draw health image
+        healthImages = new ArrayList<GImage>();
+        for (int i = 0; i < characterInfo.getHealth(); i++) {
+            gg.add(new GImage("media/images/playing/live-dark.png", 390 + i * 54, 40));
+
+            GImage light = new GImage("media/images/playing/live-light.png", 390 + i * 54, 40);
+            healthImages.add(light);
+            gg.add(light);
+        }
 
         // Generated road
         GImage road = new GImage("media/images/playing/road.png");
@@ -197,15 +208,30 @@ public class PlayingScreen extends Screen implements KeyListener {
 
     private void detectCollision() {
         // collision detection
+        int removeIndex = -1;
         for (Vehicle v : vehicles) {
             if (v.getImage().getBounds().intersects(this.characterImage.getBounds())) {
-                // failed
-                HashMap<String, Object> params = new HashMap<>();
-                //params.put("Level", level);
-                //params.put("Character", characterInfo.getCharacter());
-                // TODO: Show failed screen
-                gg.displayScreen("index", params);
+                // happened
+                removeIndex = vehicles.indexOf(v);
+                characterInfo.setHealth(characterInfo.getHealth() - 1);
+                gg.remove(healthImages.get(characterInfo.getHealth()));
+
+                if (characterInfo.getHealth() <= 0) {
+                    // failed
+                    HashMap<String, Object> params = new HashMap<>();
+                    //params.put("Level", level);
+                    //params.put("Character", characterInfo.getCharacter());
+                    // TODO: Show failed screen
+                    gg.displayScreen("index", params);
+                }
+
+                break;
             }
+        }
+
+        if (removeIndex >= 0) {
+            this.road.remove(vehicles.get(removeIndex).getImage());
+            vehicles.remove(removeIndex);
         }
     }
 

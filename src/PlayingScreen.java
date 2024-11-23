@@ -23,13 +23,12 @@ public class PlayingScreen extends Screen {
     private String character;
     private Timer timer;
     private long lastTimeMs;
+    private long startTimeMs;
     private GImage landscape;
     private int landscapeY;
     private GCanvas road;
     private ArrayList<Vehicle> vehicles;
-    
-    private long startTimeMs;
-    private boolean isLevelComplete = false; 
+    private int passedVehicleCount;
   
 
     @Override
@@ -39,9 +38,8 @@ public class PlayingScreen extends Screen {
         character = (String) params.get("Character");
         levelInfo = LevelInfo.build(level);
         vehicles = new ArrayList<Vehicle>();
-        
-        startTimeMs = System.currentTimeMillis();
-        
+        passedVehicleCount = 0;
+                
         MusicManager.getInstance().stopMusic(); //stop music once the player enters gameplay
         drawBackground();
         drawButtons();
@@ -86,6 +84,7 @@ public class PlayingScreen extends Screen {
         // 30 fps
         landscapeY = 0;
         lastTimeMs = System.currentTimeMillis();
+        startTimeMs = lastTimeMs;
         timer = new Timer(33, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -95,30 +94,18 @@ public class PlayingScreen extends Screen {
         timer.start();
     }
     
-      //checks if level is complete based it off the time right now but we will need to change this
+      //checks if level is complete based passed vehicle count
       private void checkLevelComplete() { 
          
-          double elapsedTime = (System.currentTimeMillis() - startTimeMs) / 1000.0;
-          
-          int timeLimit = 0;
-          switch (level) {
-              case 1: timeLimit = 30; 
-              break;
-              case 2: timeLimit = 45; 
-              break;
-              case 3: timeLimit = 60; 
-              break;
-          } 
+          if (passedVehicleCount >= levelInfo.requirement) {
 
-          if (elapsedTime >= timeLimit) {
-              timer.stop();
-              isLevelComplete = true;
-
+              double elapsedTime = (System.currentTimeMillis() - startTimeMs) / 1000.0;
+              
               HashMap<String, Object> params = new HashMap<>();
               params.put("Level", level);
               params.put("Character", character);
               params.put("Time", elapsedTime);
-              gg.displayScreen("Complete", params);
+              gg.displayScreen("Complete", params); // `timer.stop();` will be called by this line
           }
       }
     
@@ -155,7 +142,7 @@ public class PlayingScreen extends Screen {
         for (int i = 0; i < vehicles.size(); i++) {
             Vehicle v = vehicles.get(i);
             v.move((int) (levelInfo.speed * timerDelayMs));
-            if (v.getY() > landscape.getHeight()) {
+            if (v.getY() > landscape.getHeight() / 2) {
                 deletedVehiclesIndex.add(i);
             } else {
                 int x = levelInfo.laneX[v.getLane()];
@@ -165,9 +152,10 @@ public class PlayingScreen extends Screen {
 
         // delete passed vehicle
         for (int i = 0; i < deletedVehiclesIndex.size(); i++) {
-            System.out.println("remove " + deletedVehiclesIndex.get(i));
+            System.out.println("remove " + passedVehicleCount);
             this.road.remove(vehicles.get((int)deletedVehiclesIndex.get(i)).getImage());
             vehicles.remove((int)deletedVehiclesIndex.get(i));
+            passedVehicleCount++;
         }
 
         while (landscapeY >= 0) {

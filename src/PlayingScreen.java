@@ -6,8 +6,10 @@ import javax.swing.Timer;
 
 import acm.graphics.GCanvas;
 import acm.graphics.GImage;
+import acm.graphics.GLabel;
 import acm.graphics.GObject;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,6 +35,7 @@ public class PlayingScreen extends Screen implements KeyListener {
     private ArrayList<Vehicle> vehicles;
     private int passedVehicleCount;
     private ArrayList<GImage> healthImages;
+    private GLabel passedText;
 
     private long lastTakingUpLineStartTimeMs;
     private int lastLane;
@@ -63,6 +66,12 @@ public class PlayingScreen extends Screen implements KeyListener {
             healthImages.add(light);
             gg.add(light);
         }
+
+        // draw passedText
+        passedText = new GLabel("Passed  0/" + levelInfo.requirement, 812, 62);
+        passedText.setFont("Arial-Bold-22");
+        passedText.setColor(Color.WHITE);
+		gg.add(passedText);
 
         // Generated road
         GImage road = new GImage("media/images/playing/road.png");
@@ -181,6 +190,9 @@ public class PlayingScreen extends Screen implements KeyListener {
             vehicles.remove((int)deletedVehiclesIndex.get(i));
             passedVehicleCount++;
         }
+
+        // draw passedText
+        passedText.setLabel("Passed  " + passedVehicleCount + "/" + levelInfo.requirement);
 
         // check for taking up line timeout
         if (lastTakingUpLineStartTimeMs > 0) {

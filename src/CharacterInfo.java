@@ -23,11 +23,11 @@ public class CharacterInfo {
 		}
 		else if (character == Character.Gary) {
 			setHealth(3);
-			setModel(new GImage("media/images/playing/CharacterAssets/SteveInGame1.png"));
+			setModel(new GImage("media/images/playing/CharacterAssets/GaryInGame2.png"));
 		}
 		else if (character == Character.Steve) {
 			setHealth(3);
-			setModel(new GImage("media/images/playing/CharacterAssets/GaryInGame2.png"));
+			setModel(new GImage("media/images/playing/CharacterAssets/SteveIngame1.png"));
 		}
 	}
 

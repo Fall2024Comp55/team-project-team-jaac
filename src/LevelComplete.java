@@ -8,7 +8,7 @@ public class LevelComplete extends Screen {
     private String name = "Complete";
     private int level;
     private LevelInfo levelInfo;
-    private String character;
+    private Character character;
     private double completionTime;
     //private int health;
     
@@ -20,7 +20,7 @@ public class LevelComplete extends Screen {
 	public void show(HashMap<String, Object> params) {
 		
 		 level = (int) params.get("Level");
-		 character = (String) params.get("Character");
+		 character = (Character) params.get("Character");
 		 completionTime = (double) params.get("Time");
 		 levelInfo = LevelInfo.build(level);
 		

@@ -25,6 +25,7 @@ public class PlayingScreen extends Screen {
     private long lastTimeMs;
     private long startTimeMs;
     private GImage landscape;
+    private GImage characterImage;
     private int landscapeY;
     private GCanvas road;
     private ArrayList<Vehicle> vehicles;
@@ -35,8 +36,8 @@ public class PlayingScreen extends Screen {
     public void show(HashMap<String, Object> params) {
 
         level = (int) params.get("Level");
-        characterInfo = new CharacterInfo((Character) params.get("Character"));
         levelInfo = LevelInfo.build(level);
+        characterInfo = new CharacterInfo((Character) params.get("Character"), levelInfo.defaultLane);
         vehicles = new ArrayList<Vehicle>();
         passedVehicleCount = 0;
 
@@ -44,13 +45,11 @@ public class PlayingScreen extends Screen {
         drawBackground();
         drawButtons();
 
-
         // Generated road
         GImage road = new GImage("media/images/playing/road.png");
         this.road = new GCanvas(road.getWidth(), road.getHeight());
         this.road.add(road, 0, 0);
         gg.getGCanvas().add(this.road, 74, 100);
-
 
         // Generated landscape map
         BufferedImage srcLandscape;
@@ -80,6 +79,12 @@ public class PlayingScreen extends Screen {
             vehicles.add(v);
             this.road.add(v.getImage(), levelInfo.laneX[i] - v.getImage().getWidth() / 2, v.getY());
         }
+
+        // init character
+        characterImage = characterInfo.getModel();
+        this.road.add(characterImage,
+                      levelInfo.laneX[levelInfo.defaultLane] - characterImage.getWidth() / 2,
+                      characterInfo.getY());
 
         // 50 fps
         landscapeY = 0;
@@ -157,6 +162,11 @@ public class PlayingScreen extends Screen {
             vehicles.remove((int)deletedVehiclesIndex.get(i));
             passedVehicleCount++;
         }
+
+        // draw Character
+        int lane1X = levelInfo.laneX[characterInfo.getLane1()];
+        int lane2X = levelInfo.laneX[characterInfo.getLane2()];
+        this.characterImage.setLocation((lane1X + lane2X) / 2.0 - characterImage.getWidth() / 2, characterInfo.getY());
 
         while (landscapeY >= 0) {
             landscapeY = (int) (landscapeY - landscape.getHeight() / 2);

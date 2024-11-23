@@ -5,11 +5,11 @@ import acm.graphics.GImage;
 public class LevelScreen extends Screen {
 
     private String name = "Level";
-    private String character;
+    private Character character;
 
 	@Override
 	public void show(HashMap<String, Object> params) {
-		character = (String) params.get("Character");
+		character = (Character) params.get("Character");
 		drawBackground();
 		drawButtons();
 		drawStars();

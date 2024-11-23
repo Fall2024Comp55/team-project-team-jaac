@@ -22,7 +22,7 @@ public  class Select extends Screen {
 	// Will take players to the level select screen once select their character,
 	// as well as update the character value
 	
-	private Void CharacterClicked(Button button, String character) {
+	private Void CharacterClicked(Button button, Character character) {
 		// character is Steve, Gary or Nate
 		// deliver the character to levelScreen
 		HashMap<String, Object> params = new HashMap<String, Object>();
@@ -44,17 +44,17 @@ public  class Select extends Screen {
 		gg.add((new Button("media/images/select/Select-Title.png", 205, 39)).clicked((Button b) -> { return null; }));
 
 		//Steve assets
-		gg.add((new Button("media/images/select/Steve1.png", 93, 153)).clicked((Button b) -> { return CharacterClicked(b, "Steve"); }));
-		gg.add((new Button("media/images/select/SteveIcon1.png", 138, 192)).clicked((Button b) -> { return CharacterClicked(b, "Steve"); }));
+		gg.add((new Button("media/images/select/Steve1.png", 93, 153)).clicked((Button b) -> { return CharacterClicked(b, Character.Steve); }));
+		gg.add((new Button("media/images/select/SteveIcon1.png", 138, 192)).clicked((Button b) -> { return CharacterClicked(b, Character.Steve); }));
 		
 		//Gary assets
-		gg.add((new Button("media/images/select/Gary1.png", 447, 153)).clicked((Button b) -> { return CharacterClicked(b, "Gary"); }));
-		gg.add((new Button("media/images/select/GaryIcon1.png", 487, 192)).clicked((Button b) -> { return CharacterClicked(b, "Gary"); }));
+		gg.add((new Button("media/images/select/Gary1.png", 447, 153)).clicked((Button b) -> { return CharacterClicked(b, Character.Gary); }));
+		gg.add((new Button("media/images/select/GaryIcon1.png", 487, 192)).clicked((Button b) -> { return CharacterClicked(b, Character.Gary); }));
 
 		
 		//Nate assets
-		gg.add((new Button("media/images/select/Nate1.png", 798, 153)).clicked((Button b) -> { return CharacterClicked(b, "Nate"); }));
-		gg.add((new Button("media/images/select/NateIcon1.png", 833, 192)).clicked((Button b) -> { return CharacterClicked(b, "Nate"); }));
+		gg.add((new Button("media/images/select/Nate1.png", 798, 153)).clicked((Button b) -> { return CharacterClicked(b, Character.Nate); }));
+		gg.add((new Button("media/images/select/NateIcon1.png", 833, 192)).clicked((Button b) -> { return CharacterClicked(b, Character.Nate); }));
 
 	}
 	

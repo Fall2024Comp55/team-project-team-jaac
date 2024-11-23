@@ -8,8 +8,8 @@ public class CharacterInfo {
 	private int health;
 	private Character character;
 	private GImage model;
-	
-	public void setCharacter(Character Input) {
+
+	public CharacterInfo(Character Input) {
 		character = Input;
 		if (character == Character.Nate) {
 			setHealth(4);
@@ -24,7 +24,7 @@ public class CharacterInfo {
 			setModel(new GImage("media/images/playing/CharacterAssets/GaryInGame2.png"));
 		}
 	}
-	
+
 	public Character getCharacter(){
 		return character;
 	}
@@ -33,7 +33,7 @@ public class CharacterInfo {
 		return health;
 	}
 
-	public void setHealth(int health) {
+	private void setHealth(int health) {
 		this.health = health;
 	}
 
@@ -41,9 +41,7 @@ public class CharacterInfo {
 		return model;
 	}
 
-	public void setModel(GImage model) {
+	private void setModel(GImage model) {
 		this.model = model;
 	}
-	
-	
 }

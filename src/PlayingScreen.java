@@ -20,7 +20,7 @@ public class PlayingScreen extends Screen {
     private String name = "Playing";
     private int level;
     private LevelInfo levelInfo;
-    private String character;
+    private CharacterInfo characterInfo;
     private Timer timer;
     private long lastTimeMs;
     private long startTimeMs;
@@ -35,7 +35,7 @@ public class PlayingScreen extends Screen {
     public void show(HashMap<String, Object> params) {
 
         level = (int) params.get("Level");
-        character = (String) params.get("Character");
+        characterInfo = new CharacterInfo((Character) params.get("Character"));
         levelInfo = LevelInfo.build(level);
         vehicles = new ArrayList<Vehicle>();
         passedVehicleCount = 0;
@@ -103,7 +103,7 @@ public class PlayingScreen extends Screen {
 
               HashMap<String, Object> params = new HashMap<>();
               params.put("Level", level);
-              params.put("Character", character);
+              params.put("Character", characterInfo.getCharacter());
               params.put("Time", elapsedTime);
               gg.displayScreen("Complete", params); // `timer.stop();` will be called by this line
           }

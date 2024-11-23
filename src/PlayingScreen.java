@@ -11,11 +11,13 @@ import acm.graphics.GObject;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.*;
 import java.io.File;
 import java.io.IOException;
 
-public class PlayingScreen extends Screen {
+public class PlayingScreen extends Screen implements KeyListener {
 
     private String name = "Playing";
     private int level;
@@ -34,6 +36,8 @@ public class PlayingScreen extends Screen {
 
     @Override
     public void show(HashMap<String, Object> params) {
+
+        gg.getGCanvas().addKeyListener(this);
 
         level = (int) params.get("Level");
         levelInfo = LevelInfo.build(level);
@@ -157,7 +161,7 @@ public class PlayingScreen extends Screen {
 
         // delete passed vehicle
         for (int i = 0; i < deletedVehiclesIndex.size(); i++) {
-            System.out.println("remove " + passedVehicleCount);
+            //System.out.println("remove " + passedVehicleCount);
             this.road.remove(vehicles.get((int)deletedVehiclesIndex.get(i)).getImage());
             vehicles.remove((int)deletedVehiclesIndex.get(i));
             passedVehicleCount++;
@@ -218,6 +222,44 @@ public class PlayingScreen extends Screen {
 	protected void hide() {
 		timer.stop();
         gg.getGCanvas().remove(road);
+        gg.getGCanvas().removeKeyListener(this);
 	}
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+        if (characterInfo == null) {
+            return;
+        }
+
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_LEFT:
+                if (characterInfo.getLane1() != characterInfo.getLane2()) {
+                    characterInfo.setLane2(characterInfo.getLane1());
+                } else {
+                    characterInfo.setLane1(Math.max(characterInfo.getLane1() - 1, 0));
+                }
+                break;
+
+            case KeyEvent.VK_RIGHT:
+                if (characterInfo.getLane1() != characterInfo.getLane2()) {
+                    characterInfo.setLane1(characterInfo.getLane2());
+                } else {
+                    characterInfo.setLane2(Math.min(characterInfo.getLane2() + 1, levelInfo.laneX.length - 1));
+                }
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+    }
 
 }

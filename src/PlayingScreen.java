@@ -110,7 +110,7 @@ public class PlayingScreen extends Screen {
               params.put("Level", level);
               params.put("Character", characterInfo.getCharacter());
               params.put("Time", elapsedTime);
-              gg.displayScreen("Complete", params); // `timer.stop();` will be called by this line
+              gg.displayScreen("Complete", params); // `timer.stop();` can be called by this line
           }
       }
 
@@ -173,7 +173,22 @@ public class PlayingScreen extends Screen {
         }
         this.landscape.setLocation(0, landscapeY);
 
+        detectCollision();
         checkLevelComplete();
+    }
+
+    private void detectCollision() {
+        // collision detection
+        for (Vehicle v : vehicles) {
+            if (v.getImage().getBounds().intersects(this.characterImage.getBounds())) {
+                // failed
+                HashMap<String, Object> params = new HashMap<>();
+                //params.put("Level", level);
+                //params.put("Character", characterInfo.getCharacter());
+                // TODO: Show failed screen
+                gg.displayScreen("index", params);
+            }
+        }
     }
 
     private void drawBackground() {

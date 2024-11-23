@@ -33,6 +33,9 @@ public class PlayingScreen extends Screen implements KeyListener {
     private ArrayList<Vehicle> vehicles;
     private int passedVehicleCount;
 
+    private long lastTakingUpLineStartTimeMs;
+    private int lastLane;
+
 
     @Override
     public void show(HashMap<String, Object> params) {
@@ -44,6 +47,7 @@ public class PlayingScreen extends Screen implements KeyListener {
         characterInfo = new CharacterInfo((Character) params.get("Character"), levelInfo.defaultLane);
         vehicles = new ArrayList<Vehicle>();
         passedVehicleCount = 0;
+        lastTakingUpLineStartTimeMs = -1;
 
         MusicManager.getInstance().stopMusic(); //stop music once the player enters gameplay
         drawBackground();
@@ -167,6 +171,16 @@ public class PlayingScreen extends Screen implements KeyListener {
             passedVehicleCount++;
         }
 
+        // check for taking up line timeout
+        if (lastTakingUpLineStartTimeMs > 0) {
+            if (System.currentTimeMillis() - lastTakingUpLineStartTimeMs > 3000) {
+                System.out.println("Timeout!!!");
+                characterInfo.setLane1(lastLane);
+                characterInfo.setLane2(lastLane);
+                lastTakingUpLineStartTimeMs = -1;
+            }
+        }
+
         // draw Character
         int lane1X = levelInfo.laneX[characterInfo.getLane1()];
         int lane2X = levelInfo.laneX[characterInfo.getLane2()];
@@ -240,17 +254,31 @@ public class PlayingScreen extends Screen implements KeyListener {
             case KeyEvent.VK_LEFT:
                 if (characterInfo.getLane1() != characterInfo.getLane2()) {
                     characterInfo.setLane2(characterInfo.getLane1());
-                } else {
-                    characterInfo.setLane1(Math.max(characterInfo.getLane1() - 1, 0));
+                    lastTakingUpLineStartTimeMs = -1;
+                } else if (characterInfo.getLane1() - 1 >= 0){
+                    lastLane = characterInfo.getLane1();
+                    characterInfo.setLane1(characterInfo.getLane1() - 1);
+                    lastTakingUpLineStartTimeMs = System.currentTimeMillis();
                 }
                 break;
 
             case KeyEvent.VK_RIGHT:
                 if (characterInfo.getLane1() != characterInfo.getLane2()) {
                     characterInfo.setLane1(characterInfo.getLane2());
-                } else {
-                    characterInfo.setLane2(Math.min(characterInfo.getLane2() + 1, levelInfo.laneX.length - 1));
+                    lastTakingUpLineStartTimeMs = -1;
+                } else if (characterInfo.getLane2() + 1 < levelInfo.laneX.length) {
+                    lastLane = characterInfo.getLane2();
+                    characterInfo.setLane2(characterInfo.getLane2() + 1);
+            		lastTakingUpLineStartTimeMs = System.currentTimeMillis();
                 }
+                break;
+
+            case KeyEvent.VK_UP:
+                characterInfo.setY(Math.max(10, characterInfo.getY() - 50));
+                break;
+
+            case KeyEvent.VK_DOWN:
+                characterInfo.setY(Math.min((int)(landscape.getHeight() / 2 - characterImage.getHeight()) - 10, characterInfo.getY() + 50));
                 break;
 
             default:

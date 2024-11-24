@@ -32,13 +32,12 @@ public class LevelInfo {
 				0.2, 1.5, 45, 2);
 		} else if (level == 3) { // Add Level 3 here
 	        info = new LevelInfo(
-	                "media/images/playing/level2landscape.png",
+	                "media/images/playing/level3landscape 2.png",
 	                new int[] { 150, 350, 550, 750, 950 }, // More lanes for increased difficulty
 	                0.3, 1.6, 60, 2); // Faster speed, higher density, and more vehicles to pass
 	        }
 
 		return info;
 	}
-
 
 }

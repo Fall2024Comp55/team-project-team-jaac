@@ -19,7 +19,7 @@ public class CharacterInfo {
 		this.y = 400;
 		if (character == Character.Nate) {
 			setHealth(4);
-			setModel(new GImage("media/images/playing/CharacterAssets/Nature_nate1.png"));
+			setModel(new GImage("media/images/playing/CharacterAssets/Nature_nate2.png"));
 		}
 		else if (character == Character.Gary) {
 			setHealth(3);

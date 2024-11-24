@@ -100,6 +100,13 @@ public class PlayingScreen extends Screen implements KeyListener {
             additionalImage.setLocation(250, 33);
             gg.getGCanvas().add(additionalImage);
         }
+        //level 3 ability indicator
+        if (level == 3) {
+            // Display a Level 3 ability indicator
+            GImage level3AbilityImage = new GImage("media/images/playing/Level2ability.png"); // change to level 3 ability
+            level3AbilityImage.setLocation(250, 33); // Adjust position as needed
+            gg.getGCanvas().add(level3AbilityImage);
+        }
 
         // init vehicle
         for (int i = 0; i < levelInfo.laneX.length; i++) {
@@ -168,6 +175,7 @@ public class PlayingScreen extends Screen implements KeyListener {
                 vehicles.add(newVehicle);
                 this.road.add(newVehicle.getImage(), levelInfo.laneX[i] - newVehicle.getImage().getWidth() / 2, newVehicle.getY());
             }
+            
         }
 
         // move vehicle

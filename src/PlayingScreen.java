@@ -36,6 +36,7 @@ public class PlayingScreen extends Screen implements KeyListener {
     private int passedVehicleCount;
     private ArrayList<GImage> healthImages;
     private GLabel passedText;
+    private GLabel timeDisplayLabel;
 
     private long lastTakingUpLineStartTimeMs;
     private int lastLane;
@@ -59,12 +60,25 @@ public class PlayingScreen extends Screen implements KeyListener {
 
         // draw health image
         healthImages = new ArrayList<GImage>();
+        
+        if (characterInfo.getCharacter() == Character.Nate ) {
+        	for (int i = 0; i < characterInfo.getHealth(); i++) {
+                gg.add(new GImage("media/images/playing/live-dark.png", 368 + i * 50, 40));
+
+                GImage light = new GImage("media/images/playing/live-light.png", 368 + i * 50, 40);
+                healthImages.add(light);
+                gg.add(light);
+            	}
+        }
+       
+        else {
         for (int i = 0; i < characterInfo.getHealth(); i++) {
             gg.add(new GImage("media/images/playing/live-dark.png", 390 + i * 54, 40));
 
             GImage light = new GImage("media/images/playing/live-light.png", 390 + i * 54, 40);
             healthImages.add(light);
             gg.add(light);
+        	}
         }
 
         // draw passedText
@@ -72,6 +86,12 @@ public class PlayingScreen extends Screen implements KeyListener {
         passedText.setFont("Arial-Bold-22");
         passedText.setColor(Color.WHITE);
 		gg.add(passedText);
+		
+		// Time count text
+        timeDisplayLabel = new GLabel("Time: 00.00.00", 590, 62);
+        timeDisplayLabel.setFont("Arial-Bold-20");
+        timeDisplayLabel.setColor(Color.WHITE);
+        gg.add(timeDisplayLabel); 
 
         // Generated road
         GImage road = new GImage("media/images/playing/road.png");
@@ -153,6 +173,16 @@ public class PlayingScreen extends Screen implements KeyListener {
     private void updateAnimation() {
         long timerDelayMs = System.currentTimeMillis() - lastTimeMs;
         lastTimeMs = System.currentTimeMillis();
+        
+        // Time count
+        double elapsedTime = (System.currentTimeMillis() - startTimeMs) / 1000.0;
+        if (timeDisplayLabel != null) {
+        	timeDisplayLabel.setLabel(String.format("Time: %02d:%02d:%02d", 
+        		    (int)(elapsedTime / 60), 
+        		    (int)(elapsedTime % 60), 
+        		    (int)((elapsedTime * 100) % 100)
+        		));
+        }
 
         // move landscape
         landscapeY += levelInfo.speed * timerDelayMs;
@@ -260,6 +290,7 @@ public class PlayingScreen extends Screen implements KeyListener {
         gg.add(new GImage("media/images/playing/livebg.png", 361, 32));
         gg.add(new GImage("media/images/playing/timebg.png", 576, 32));
         gg.add(new GImage("media/images/playing/passedbg.png", 786, 32));
+        gg.add(new GImage("media/images/playing/timebutton.png", 730, 36));
     }
 
     private Void BackButtonClicked(Button button) {

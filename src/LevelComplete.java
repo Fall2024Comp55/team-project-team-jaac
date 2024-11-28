@@ -90,7 +90,7 @@ public class LevelComplete extends Screen {
 				.clicked((Button b) -> {  return BackButtonClicked(b); }));
 		
 		if (level == 3) {
-			gg.add((new Button("media/images/levelcomplete/back2.png", 257, 361)) //might need to adjust this later 
+			gg.add((new Button("media/images/levelcomplete/back2.png", 537, 525)) //might need to adjust this later 
 					.clicked((Button b) -> { return BackButtonClicked(b); }));
 		} else {
 			gg.add((new Button("media/images/levelcomplete/back2.png", 418, 525))

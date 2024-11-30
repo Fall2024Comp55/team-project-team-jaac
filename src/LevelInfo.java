@@ -23,13 +23,13 @@ public class LevelInfo {
 			info = new LevelInfo(
 				"media/images/playing/level1landscape.png",
 				new int[] { 225, 530, 850 },
-				0.1, 1, 30, 1);
+				0.1, 0.6, 30, 1);
 		} else if (level == 2)
 		{
 			info = new LevelInfo(
 				"media/images/playing/level2landscape.png",
 				new int[] { 180, 410, 640, 875 },
-				0.2, 1.5, 45, 2);
+				0.2, 1.0, 45, 2);
 		} else if (level == 3) { // Add Level 3 here
 	        info = new LevelInfo(
 	                "media/images/playing/level3landscape 2.png",

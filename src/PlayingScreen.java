@@ -65,21 +65,17 @@ public class PlayingScreen extends Screen implements KeyListener {
         if (characterInfo.getCharacter() == Character.Nate ) {
         	for (int i = 0; i < characterInfo.getHealth(); i++) {
                 gg.add(new GImage("media/images/playing/live-dark.png", 368 + i * 50, 40));
-
                 GImage light = new GImage("media/images/playing/live-light.png", 368 + i * 50, 40);
                 healthImages.add(light);
                 gg.add(light);
-            	}
-        }
-
-        else {
-        for (int i = 0; i < characterInfo.getHealth(); i++) {
-            gg.add(new GImage("media/images/playing/live-dark.png", 390 + i * 54, 40));
-
-            GImage light = new GImage("media/images/playing/live-light.png", 390 + i * 54, 40);
-            healthImages.add(light);
-            gg.add(light);
-        	}
+            }
+        } else {
+            for (int i = 0; i < characterInfo.getHealth(); i++) {
+                gg.add(new GImage("media/images/playing/live-dark.png", 390 + i * 54, 40));
+                GImage light = new GImage("media/images/playing/live-light.png", 390 + i * 54, 40);
+                healthImages.add(light);
+                gg.add(light);
+            }
         }
 
         // draw passedText
@@ -115,16 +111,16 @@ public class PlayingScreen extends Screen implements KeyListener {
         this.landscape = new GImage(landscape);
         this.road.add(this.landscape, 0, 0);
 
-        switch (level) {
-            case 1:
+        switch (characterInfo.getCharacter()) {
+            case Character.Steve:
                 abilityButton = null;
                 break;
-            case 2:
-                abilityButton = new Button("media/images/playing/Level2ability.png", 250, 33);
+            case Character.Gary:
+                abilityButton = new Button("media/images/playing/GaryAbility.png", 250, 33);
                 break;
-            case 3:
-                // TODO: change to level 3 ability
-                abilityButton = new Button("media/images/playing/Level2ability.png", 250, 33);
+            case Character.Nate:
+                // TODO: change to Nate ability
+                abilityButton = new Button("media/images/playing/GaryAbility.png", 250, 33);
                 break;
             default:
                 break;
@@ -305,6 +301,14 @@ public class PlayingScreen extends Screen implements KeyListener {
     }
 
     private Void AbilityButtonClicked(Button button) {
+        if (characterInfo.getCharacter() == Character.Gary) {
+            
+
+        } else if (characterInfo.getCharacter() == Character.Nate) {
+
+
+        }
+
         return null;
     }
 

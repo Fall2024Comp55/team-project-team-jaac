@@ -4,7 +4,7 @@ import acm.graphics.GImage;
 
 public class Vehicle {
     public enum VehicleType {
-        CAR1, CAR2, TRUCK1, TRUCK2;
+        HEALTH, ABILITY, CAR1, CAR2, TRUCK1, TRUCK2;
     }
 
     private VehicleType type;
@@ -18,6 +18,12 @@ public class Vehicle {
         this.y = y;
 
         switch (type) {
+            case HEALTH:
+                image = new GImage("media/images/playing/live-light.png");
+                break;
+            case ABILITY:
+                image = new GImage("media/images/playing/ability.png");
+                break;
             case CAR1:
                 image = new GImage("media/images/playing/car1.png");
                 break;
@@ -56,8 +62,16 @@ public class Vehicle {
         this.y += moveY;
     }
 
-    public static Vehicle random(int minY, int maxY, int lane) {
+    public static Vehicle random(int minY, int maxY, int lane, double densityOfAbility, double densityOfHealth) {
         Random random = new Random();
-        return new Vehicle(VehicleType.values()[random.nextInt(VehicleType.values().length)], lane, random.nextInt(maxY - minY + 1) + minY);
+        VehicleType[] values = VehicleType.values();
+        double rd = random.nextDouble();
+        if (rd < densityOfAbility) {
+            return new Vehicle(VehicleType.ABILITY, lane, random.nextInt(maxY - minY + 1) + minY);
+        } else if (rd < densityOfAbility + densityOfHealth) {
+            return new Vehicle(VehicleType.HEALTH, lane, random.nextInt(maxY - minY + 1) + minY);
+        } else {
+            return new Vehicle(values[random.nextInt(values.length - 2) + 2], lane, random.nextInt(maxY - minY + 1) + minY);
+        }
     }
 }

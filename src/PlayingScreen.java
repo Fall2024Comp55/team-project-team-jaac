@@ -30,7 +30,7 @@ public class PlayingScreen extends Screen implements KeyListener {
     private long startTimeMs;
     private GImage landscape;
     private GImage characterImage;
-    private Button abilityButton;
+    private GImage abilityImage;
     private int landscapeY;
     private GCanvas road;
     private ArrayList<Vehicle> vehicles;
@@ -41,6 +41,8 @@ public class PlayingScreen extends Screen implements KeyListener {
 
     private long lastTakingUpLineStartTimeMs;
     private int lastLane;
+
+    private long abilityStartTimeMs;
 
 
     @Override
@@ -111,27 +113,36 @@ public class PlayingScreen extends Screen implements KeyListener {
         this.landscape = new GImage(landscape);
         this.road.add(this.landscape, 0, 0);
 
+        // init ability
         switch (characterInfo.getCharacter()) {
             case Character.Steve:
-                abilityButton = null;
+                abilityImage = null;
                 break;
             case Character.Gary:
-                abilityButton = new Button("media/images/playing/GaryAbility.png", 250, 33);
+                // Press space for 3 seconds to ignore and pass through all vehicles without taking damage
+                abilityImage = new GImage("media/images/playing/GaryAbility.png", 250, 33);
                 break;
             case Character.Nate:
-                // TODO: change to Nate ability
-                abilityButton = new Button("media/images/playing/GaryAbility.png", 250, 33);
+                // Press space for 5 seconds to crash all vehicles without slowing down but taking damage
+                // TODO: change image
+                abilityImage = new GImage("media/images/playing/GaryAbility.png", 250, 33);
                 break;
             default:
                 break;
         }
-        if (abilityButton != null) {
-            gg.add(abilityButton.clicked((Button b) -> {return AbilityButtonClicked(b);}));
+        if (abilityImage != null) {
+            gg.add(abilityImage);
+            abilityImage.setVisible(false);
         }
+        abilityStartTimeMs = -1;
 
         // init vehicle
         for (int i = 0; i < levelInfo.laneX.length; i++) {
-            Vehicle v = Vehicle.random(-this.road.getHeight(), 0, i);
+            Vehicle v = Vehicle.random(
+                -this.road.getHeight(),
+                0, i,
+                characterInfo.getCharacter() == Character.Steve ? 0 : levelInfo.densityOfAbility,
+                levelInfo.densityOfHealth);
             vehicles.add(v);
             this.road.add(v.getImage(), levelInfo.laneX[i] - v.getImage().getWidth() / 2, v.getY());
         }
@@ -185,6 +196,15 @@ public class PlayingScreen extends Screen implements KeyListener {
         		));
         }
 
+        // check ability state
+        if (abilityStartTimeMs > 0) {
+            if (characterInfo.getCharacter() == Character.Gary && System.currentTimeMillis() - abilityStartTimeMs > 3000) {
+                abilityStartTimeMs = -1;    // ability is over
+            } else if (characterInfo.getCharacter() == Character.Nate && System.currentTimeMillis() - abilityStartTimeMs > 5000) {
+                abilityStartTimeMs = -1;     // ability is over
+            }
+        }
+
         // move landscape
         landscapeY += levelInfo.speed * timerDelayMs;
 
@@ -201,12 +221,15 @@ public class PlayingScreen extends Screen implements KeyListener {
         }
         for (int i = 0; i < laneNum; i++) {
             if (laneMinY[i] > 0) {
-                Vehicle newVehicle = Vehicle.random((int) (-this.road.getHeight() / levelInfo.density), 0, i);
+                Vehicle newVehicle = Vehicle.random(
+                    (int) (-this.road.getHeight() / levelInfo.density),
+                    0, i,
+                    characterInfo.getCharacter() == Character.Steve ? 0 : levelInfo.densityOfAbility,
+                    levelInfo.densityOfHealth);
                 newVehicle.move((int) -newVehicle.getImage().getHeight());
                 vehicles.add(newVehicle);
                 this.road.add(newVehicle.getImage(), levelInfo.laneX[i] - newVehicle.getImage().getWidth() / 2, newVehicle.getY());
             }
-
         }
 
         // move vehicle
@@ -225,9 +248,12 @@ public class PlayingScreen extends Screen implements KeyListener {
         // delete passed vehicle
         for (int i = 0; i < deletedVehiclesIndex.size(); i++) {
             //System.out.println("remove " + passedVehicleCount);
-            this.road.remove(vehicles.get((int)deletedVehiclesIndex.get(i)).getImage());
+            Vehicle deletedVehicle = vehicles.get((int)deletedVehiclesIndex.get(i));
+            this.road.remove(deletedVehicle.getImage());
             vehicles.remove((int)deletedVehiclesIndex.get(i));
-            passedVehicleCount++;
+            if (deletedVehicle.getType() != Vehicle.VehicleType.ABILITY && deletedVehicle.getType() != Vehicle.VehicleType.HEALTH) {
+                passedVehicleCount++;
+            }
         }
 
         // draw passedText
@@ -253,7 +279,9 @@ public class PlayingScreen extends Screen implements KeyListener {
         }
         this.landscape.setLocation(0, landscapeY);
 
-        detectCollision();
+        if (!(characterInfo.getCharacter() == Character.Gary && abilityStartTimeMs >= 0)) {// Press space for 3 seconds to ignore and pass through all vehicles without taking damage
+            detectCollision();
+        }
         checkLevelComplete();
     }
 
@@ -264,9 +292,22 @@ public class PlayingScreen extends Screen implements KeyListener {
             if (v.getImage().getBounds().intersects(this.characterImage.getBounds())) {
                 // happened
                 removeIndex = vehicles.indexOf(v);
-                characterInfo.setHealth(characterInfo.getHealth() - 1);
-                gg.remove(healthImages.get(characterInfo.getHealth()));
 
+                if (v.getType() == Vehicle.VehicleType.HEALTH) {
+                	if (characterInfo.getHealth() < healthImages.size()) {
+                        healthImages.get(characterInfo.getHealth()).setVisible(true);
+                        characterInfo.setHealth(characterInfo.getHealth() + 1);
+                    }
+                } else if (v.getType() == Vehicle.VehicleType.ABILITY) {
+                    if (abilityImage != null) {
+                        abilityImage.setVisible(true);
+                    }
+                } else {
+                    if (!(characterInfo.getCharacter() == Character.Nate && abilityStartTimeMs >= 0)) {// Press space for 5 seconds to crash all vehicles without slowing down but taking damage
+                        characterInfo.setHealth(characterInfo.getHealth() - 1);
+                        healthImages.get(characterInfo.getHealth()).setVisible(false);
+                    }
+                }
 
                 if (characterInfo.getHealth() <= 0) {
                 	if (timer != null) {
@@ -298,18 +339,6 @@ public class PlayingScreen extends Screen implements KeyListener {
         gg.add(new GImage("media/images/playing/timebg.png", 576, 32));
         gg.add(new GImage("media/images/playing/passedbg.png", 786, 32));
         gg.add(new GImage("media/images/playing/timebutton.png", 730, 36));
-    }
-
-    private Void AbilityButtonClicked(Button button) {
-        if (characterInfo.getCharacter() == Character.Gary) {
-            
-
-        } else if (characterInfo.getCharacter() == Character.Nate) {
-
-
-        }
-
-        return null;
     }
 
     private Void BackButtonClicked(Button button) {
@@ -378,6 +407,19 @@ public class PlayingScreen extends Screen implements KeyListener {
 
             case KeyEvent.VK_DOWN:
                 characterInfo.setY(Math.min((int)(landscape.getHeight() / 2 - characterImage.getHeight()) - 10, characterInfo.getY() + 50));
+                break;
+
+            case KeyEvent.VK_SPACE:
+                if (abilityImage.isVisible()) {
+                    abilityStartTimeMs = System.currentTimeMillis();
+                    abilityImage.setVisible(false);
+
+                    // Press space for 5 seconds to crash all vehicles without slowing down but taking damage
+                    if (characterInfo.getCharacter() == Character.Nate) {
+                        characterInfo.setHealth(characterInfo.getHealth() - 1);
+                        healthImages.get(characterInfo.getHealth()).setVisible(false);
+                    }
+                }
                 break;
 
             default:

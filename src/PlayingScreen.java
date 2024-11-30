@@ -159,12 +159,12 @@ public class PlayingScreen extends Screen implements KeyListener {
 
           if (passedVehicleCount >= levelInfo.requirement) {
 
-              double elapsedTime = (System.currentTimeMillis() - startTimeMs) / 1000.0;
+              long elapsedTimeMs = System.currentTimeMillis() - startTimeMs;
 
               HashMap<String, Object> params = new HashMap<>();
               params.put("Level", level);
               params.put("Character", characterInfo.getCharacter());
-              params.put("Time", elapsedTime);
+              params.put("Time", elapsedTimeMs);
               gg.displayScreen("Complete", params); // `timer.stop();` can be called by this line
           }
       }

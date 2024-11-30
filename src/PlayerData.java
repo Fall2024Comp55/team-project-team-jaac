@@ -5,11 +5,10 @@ import java.util.HashMap;
 // Use this class:
 //   PlayerData.getInstance().method();
 public class PlayerData {
-	
-	
-    public class LevelScore {
+
+    public static class LevelScore {
         public int star;
-        public int timeMs;
+        public long timeMs;
         public int carPassed;
     }
 
@@ -21,7 +20,7 @@ public class PlayerData {
 	}
 
     public LevelScore getBestScore(int level) {
-        return bestScores.get(bestScores);
+        return bestScores.get(level);
     }
 
     public void setBestScore(int level, LevelScore score) {

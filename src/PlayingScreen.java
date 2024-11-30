@@ -30,6 +30,7 @@ public class PlayingScreen extends Screen implements KeyListener {
     private long startTimeMs;
     private GImage landscape;
     private GImage characterImage;
+    private Button abilityButton;
     private int landscapeY;
     private GCanvas road;
     private ArrayList<Vehicle> vehicles;
@@ -60,7 +61,7 @@ public class PlayingScreen extends Screen implements KeyListener {
 
         // draw health image
         healthImages = new ArrayList<GImage>();
-        
+
         if (characterInfo.getCharacter() == Character.Nate ) {
         	for (int i = 0; i < characterInfo.getHealth(); i++) {
                 gg.add(new GImage("media/images/playing/live-dark.png", 368 + i * 50, 40));
@@ -70,7 +71,7 @@ public class PlayingScreen extends Screen implements KeyListener {
                 gg.add(light);
             	}
         }
-       
+
         else {
         for (int i = 0; i < characterInfo.getHealth(); i++) {
             gg.add(new GImage("media/images/playing/live-dark.png", 390 + i * 54, 40));
@@ -86,12 +87,12 @@ public class PlayingScreen extends Screen implements KeyListener {
         passedText.setFont("Arial-Bold-22");
         passedText.setColor(Color.WHITE);
 		gg.add(passedText);
-		
+
 		// Time count text
         timeDisplayLabel = new GLabel("Time: 00.00.00", 590, 62);
         timeDisplayLabel.setFont("Arial-Bold-20");
         timeDisplayLabel.setColor(Color.WHITE);
-        gg.add(timeDisplayLabel); 
+        gg.add(timeDisplayLabel);
 
         // Generated road
         GImage road = new GImage("media/images/playing/road.png");
@@ -114,18 +115,22 @@ public class PlayingScreen extends Screen implements KeyListener {
         this.landscape = new GImage(landscape);
         this.road.add(this.landscape, 0, 0);
 
-        //level 2 images
-        if (level == 2) {
-            GImage additionalImage = new GImage("media/images/playing/Level2ability.png");
-            additionalImage.setLocation(250, 33);
-            gg.getGCanvas().add(additionalImage);
+        switch (level) {
+            case 1:
+                abilityButton = null;
+                break;
+            case 2:
+                abilityButton = new Button("media/images/playing/Level2ability.png", 250, 33);
+                break;
+            case 3:
+                // TODO: change to level 3 ability
+                abilityButton = new Button("media/images/playing/Level2ability.png", 250, 33);
+                break;
+            default:
+                break;
         }
-        //level 3 ability indicator
-        if (level == 3) {
-            // Display a Level 3 ability indicator
-            GImage level3AbilityImage = new GImage("media/images/playing/Level2ability.png"); // change to level 3 ability
-            level3AbilityImage.setLocation(250, 33); // Adjust position as needed
-            gg.getGCanvas().add(level3AbilityImage);
+        if (abilityButton != null) {
+            gg.add(abilityButton.clicked((Button b) -> {return AbilityButtonClicked(b);}));
         }
 
         // init vehicle
@@ -173,13 +178,13 @@ public class PlayingScreen extends Screen implements KeyListener {
     private void updateAnimation() {
         long timerDelayMs = System.currentTimeMillis() - lastTimeMs;
         lastTimeMs = System.currentTimeMillis();
-        
+
         // Time count
         double elapsedTime = (System.currentTimeMillis() - startTimeMs) / 1000.0;
         if (timeDisplayLabel != null) {
-        	timeDisplayLabel.setLabel(String.format("Time: %02d:%02d:%02d", 
-        		    (int)(elapsedTime / 60), 
-        		    (int)(elapsedTime % 60), 
+        	timeDisplayLabel.setLabel(String.format("Time: %02d:%02d:%02d",
+        		    (int)(elapsedTime / 60),
+        		    (int)(elapsedTime % 60),
         		    (int)((elapsedTime * 100) % 100)
         		));
         }
@@ -205,7 +210,7 @@ public class PlayingScreen extends Screen implements KeyListener {
                 vehicles.add(newVehicle);
                 this.road.add(newVehicle.getImage(), levelInfo.laneX[i] - newVehicle.getImage().getWidth() / 2, newVehicle.getY());
             }
-            
+
         }
 
         // move vehicle
@@ -265,7 +270,7 @@ public class PlayingScreen extends Screen implements KeyListener {
                 removeIndex = vehicles.indexOf(v);
                 characterInfo.setHealth(characterInfo.getHealth() - 1);
                 gg.remove(healthImages.get(characterInfo.getHealth()));
-                
+
 
                 if (characterInfo.getHealth() <= 0) {
                 	if (timer != null) {
@@ -299,6 +304,10 @@ public class PlayingScreen extends Screen implements KeyListener {
         gg.add(new GImage("media/images/playing/timebutton.png", 730, 36));
     }
 
+    private Void AbilityButtonClicked(Button button) {
+        return null;
+    }
+
     private Void BackButtonClicked(Button button) {
         gg.displayScreen("index", null);
         return null;
@@ -320,7 +329,7 @@ public class PlayingScreen extends Screen implements KeyListener {
 		if(timer != null) { // if statement added for the timer
 			timer.stop();
 		}
-		
+
         gg.getGCanvas().remove(road);
         gg.getGCanvas().removeKeyListener(this);
 	}

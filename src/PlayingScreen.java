@@ -38,6 +38,8 @@ public class PlayingScreen extends Screen implements KeyListener {
     private ArrayList<GImage> healthImages;
     private GLabel passedText;
     private GLabel timeDisplayLabel;
+    private GLabel laneChangeTimeText;
+    private GImage laneChangeTimebg;
 
     private long lastTakingUpLineStartTimeMs;
     private int lastLane;
@@ -91,6 +93,17 @@ public class PlayingScreen extends Screen implements KeyListener {
         timeDisplayLabel.setFont("Arial-Bold-20");
         timeDisplayLabel.setColor(Color.WHITE);
         gg.add(timeDisplayLabel);
+        
+        // 3s Timer Remind bg
+        laneChangeTimebg = new GImage("media/images/playing/timebg.png", 500, 744); //might need to adjust 
+        laneChangeTimebg.setVisible(false);
+        gg.add(laneChangeTimebg);
+        
+        // Lane Change: 3s Timer Remind
+        laneChangeTimeText = new GLabel("", 515, 774);
+        laneChangeTimeText.setFont("Arial-Bold-19");
+        laneChangeTimeText.setColor(Color.WHITE);
+        gg.add(laneChangeTimeText);
 
         // Generated road
         GImage road = new GImage("media/images/playing/road.png");
@@ -261,12 +274,34 @@ public class PlayingScreen extends Screen implements KeyListener {
 
         // check for taking up line timeout
         if (lastTakingUpLineStartTimeMs > 0) {
+        	
+        	//3s timer remind
+        	long remainingTime = 3000 - (System.currentTimeMillis() - lastTakingUpLineStartTimeMs);
+        	if(remainingTime > 0) {
+        		
+        		int countdownNumber = (int)(remainingTime / 1000) + 1; 
+        			
+        		//3s timer display 
+        		laneChangeTimeText.setLabel(String.format ("Time Remaining: " + countdownNumber)); 
+            	laneChangeTimeText.setVisible(true);
+            	laneChangeTimebg.setVisible(true);	
+        	}
+        	
             if (System.currentTimeMillis() - lastTakingUpLineStartTimeMs > 3000) {
                 System.out.println("Timeout!!!");
                 characterInfo.setLane1(lastLane);
                 characterInfo.setLane2(lastLane);
                 lastTakingUpLineStartTimeMs = -1;
+                
+                laneChangeTimeText.setVisible(false); //3s timer remind
+                laneChangeTimeText.setLabel("");
+                laneChangeTimebg.setVisible(false);
             }
+        } else {
+        	
+        	laneChangeTimeText.setVisible(false);
+        	laneChangeTimeText.setLabel("");
+        	laneChangeTimebg.setVisible(false);
         }
 
         // draw Character
@@ -361,6 +396,14 @@ public class PlayingScreen extends Screen implements KeyListener {
 	protected void hide() { //Ensure that timer.stop() is always called when the screen is hidden or gameplay ends
 		if(timer != null) { // if statement added for the timer
 			timer.stop();
+		}
+		
+		if (laneChangeTimeText != null) {
+			gg.remove(laneChangeTimeText);
+		}
+		
+		if (laneChangeTimebg != null) {
+			gg.remove(laneChangeTimebg);
 		}
 
         gg.getGCanvas().remove(road);

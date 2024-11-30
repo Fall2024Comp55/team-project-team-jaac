@@ -7,11 +7,13 @@ public class GameOver extends Screen {
     private String name = "GameOver";
     private int level;
     private Character character;
+    private double completionTime;
 
     @Override
     public void show(HashMap<String, Object> params) {
         level = (int) params.get("Level");
         character = (Character) params.get("Character");
+        completionTime = (double) params.get("Time");
 
         drawBackground();
         drawGameOverTitle();
@@ -19,13 +21,14 @@ public class GameOver extends Screen {
     }
 
     private void drawBackground() {
-        GImage background = new GImage("media/images/gameover/bg.png", 0, 0);
-        background.setSize(1200, 800);
-        gg.add(background);
+    	GImage image;
+        image = new GImage("media/images/levelcomplete/bg.png", 0, 0);
+        image.setSize(1200, 800);
+		gg.add(image);
     }
     
     private void drawGameOverTitle() {
-        GImage gameOverTitle = new GImage("media/images/gameover/GameOverTitle.png", 400, 100);
+        GImage gameOverTitle = new GImage("media/images/GameOver/GameOver Frame.png", 275, 160);
         gg.add(gameOverTitle);
     }
     

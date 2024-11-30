@@ -265,12 +265,18 @@ public class PlayingScreen extends Screen implements KeyListener {
                 removeIndex = vehicles.indexOf(v);
                 characterInfo.setHealth(characterInfo.getHealth() - 1);
                 gg.remove(healthImages.get(characterInfo.getHealth()));
+                
 
                 if (characterInfo.getHealth() <= 0) {
+                	if (timer != null) {
+                        timer.stop();
+                    }
+                	double elapsedTime = (System.currentTimeMillis() - startTimeMs) / 1000.0;
                     // failed
                     HashMap<String, Object> params = new HashMap<>();
-                    //params.put("Level", level);
-                    //params.put("Character", characterInfo.getCharacter());
+                    params.put("Level", level);
+                    params.put("Character", characterInfo.getCharacter());
+                    params.put("Time", elapsedTime);
                     // TODO: Show failed screen
                     gg.displayScreen("index", params);
                 }

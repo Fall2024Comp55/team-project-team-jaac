@@ -9,6 +9,7 @@ public class ScoreboardScreen extends Screen {
 	@Override
 	public void show(HashMap<String, Object> params) {
 		drawBackground();
+	    displayScores();
 		drawButtons();
 	}
 
@@ -32,23 +33,43 @@ public class ScoreboardScreen extends Screen {
 		gg.add((new Button("media/images/scoreboard/back.png", 40, 34)).clicked((Button b) -> { return BackButtonClicked(b); }));
 		gg.add((new Button("media/images/scoreboard/back2.png", 252+275, 673)).clicked((Button b) -> { return BackButtonClicked(b); }));
     }
+    
+    private String tempTime(long timeMs) {
+        long seconds = timeMs / 1000;
+        long minutes = seconds / 60;
+        long hours = minutes / 60;
+
+        seconds = seconds % 60;
+        minutes = minutes % 60;
+
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+    }
 
     private void displayScores() {
     	PlayerData playerdata = PlayerData.getInstance();
-    	int yPosition = 150; 
+    	int yPosition = 289; 
+    	int xPosition = 289; 
     	
     	for(int level = 1; level <=3; level++) {
-    		PlayerData.LevelScore score = playerdata.getBestScore(level);
+    		PlayerData.LevelScore bestScores = playerdata.getBestScore(level);
     		
-    		if(score != null) {
-    			String timeText = String.valueOf(score.timeMs);
-    			String carsPassedText = String.valueOf(score.carPassed);
+    		if(bestScores != null) {
+    			String timeText = tempTime(bestScores.timeMs);
+    			String carsPassedText = String.valueOf(bestScores.carPassed);
     			
-    			GLabel timeLabel = new GLabel(timeText, 400, yPosition); // will need to adjust later
-    			GLabel carsPassedLabel = new GLabel(carsPassedText, 500, yPosition);
+    			GLabel timeLabel = new GLabel(timeText, 490, yPosition);
+    			 timeLabel.setFont("Arial-Bold-20");
+                 timeLabel.setColor(java.awt.Color.WHITE);
+                 
+    			GLabel carsPassedLabel = new GLabel(carsPassedText, 805, xPosition);
+    			 carsPassedLabel.setFont("Arial-Bold-20");
+                 carsPassedLabel.setColor(java.awt.Color.WHITE);
     			
     			gg.add(timeLabel);
     			gg.add(carsPassedLabel);
+    			
+    			yPosition += 156;
+    			xPosition += 156;
     		}
     	}
     }
@@ -60,7 +81,6 @@ public class ScoreboardScreen extends Screen {
     
     @Override
 	protected void hide() {
-		// // noting to do
 		
 	}
 }

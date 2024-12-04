@@ -35,7 +35,9 @@ public class GameOver extends Screen {
         GImage gameOverTitle = new GImage("media/images/GameOver/GameOver Frame.png", 400, 160);
         gameOverTitle.setSize(406,60);
         gg.add(gameOverTitle);
-        gg.add(new GImage("media/images/GameOver/RedCircle.png", 400, 260));
+        gg.add(new GImage("media/images/GameOver/RedCircle.png", 510, 265));
+        gg.add(new GImage("media/images/GameOver/BrokenHeart.png", 550, 300));
+        gg.add(new GImage("media/images/GameOver/Ga me ov er.png", 404, 280));
         
         
         

@@ -24,7 +24,7 @@ public class GameOver extends Screen {
 
         drawBackground();
         drawBackButton();
-        //drawButtons();
+        drawtryButton();
     }
 
     private void drawBackground() {
@@ -35,6 +35,8 @@ public class GameOver extends Screen {
         GImage gameOverTitle = new GImage("media/images/GameOver/GameOver Frame.png", 400, 160);
         gameOverTitle.setSize(406,60);
         gg.add(gameOverTitle);
+        gg.add(new GImage("media/images/GameOver/RedCircle.png", 400, 260));
+        
         
         
     }
@@ -44,7 +46,7 @@ public class GameOver extends Screen {
             backToMainMenu();
             return null;
         }));
-        gg.add((new Button("media/images/credits/back2.png", 252+140, 514)).clicked((Button b) -> { backToMainMenu(); return null;}));
+        gg.add((new Button("media/images/credits/back2.png", 252+160, 514)).clicked((Button b) -> { backToMainMenu(); return null;}));
         
     }
 
@@ -54,7 +56,18 @@ public class GameOver extends Screen {
     }
     
     private void drawtryButton() {
+    	gg.add((new Button("media/images/GameOver/TryAgain.png", 630, 514))
+                .clicked((Button b) -> {
+                    return RestartLevelButtonClicked(b);
+                }));
+    }
     
+    private Void RestartLevelButtonClicked(Button button) {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("Level", level);
+        params.put("Character", character);
+        gg.displayScreen("Playing", params); // Restart the current level
+        return null;
     }
     
     @Override

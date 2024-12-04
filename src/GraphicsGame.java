@@ -27,6 +27,7 @@ public class GraphicsGame extends GraphicsProgram {
 			new PlayingScreen(),
 			new OptionsMenu(),
 			new LevelComplete(),
+			new GameOver(),
 		
 		};
 	}

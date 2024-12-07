@@ -7,6 +7,7 @@ import acm.graphics.GLabel;
 import acm.graphics.GRect;
 import acm.graphics.GObject;
 import java.awt.Color;
+import java.awt.Container;
 
 
 public class GameOver extends Screen {
@@ -35,9 +36,11 @@ public class GameOver extends Screen {
         GImage gameOverTitle = new GImage("media/images/GameOver/GameOver Frame.png", 400, 160);
         gameOverTitle.setSize(406,60);
         gg.add(gameOverTitle);
-        gg.add(new GImage("media/images/GameOver/RedCircle.png", 510, 265));
-        gg.add(new GImage("media/images/GameOver/BrokenHeart.png", 550, 300));
-        gg.add(new GImage("media/images/GameOver/Ga me ov er.png", 404, 280));
+        gg.add(new GImage("media/images/GameOver/RedCircle.png", 520, 285));
+        gg.add(new GImage("media/images/GameOver/BrokenHeart.png", 560, 320));
+        gg.add(new GImage("media/images/GameOver/Ga me ov er.png", 414, 310));
+        
+        
         
         
         
@@ -58,10 +61,19 @@ public class GameOver extends Screen {
     }
     
     private void drawtryButton() {
-    	gg.add((new Button("media/images/GameOver/TryAgain.png", 630, 514))
-                .clicked((Button b) -> {
-                    return RestartLevelButtonClicked(b);
-                }));
+    	GImage arrow = new GImage("media/images/levelcomplete/Frame.png", 650, 521);
+        gg.add(arrow);
+        arrow.sendToFront();
+    	
+    	Button tryAgainButton = new Button("media/images/GameOver/TryAgain.png", 630, 514);
+
+    	// Add a click event listener
+    	tryAgainButton.clicked((Button b) -> {
+    	    return RestartLevelButtonClicked(b); 
+    	});
+    	gg.add(tryAgainButton);
+    	tryAgainButton.sendBackward();
+    	
     }
     
     private Void RestartLevelButtonClicked(Button button) {

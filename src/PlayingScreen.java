@@ -356,7 +356,7 @@ public class PlayingScreen extends Screen implements KeyListener {
                     params.put("Character", characterInfo.getCharacter());
                     params.put("Time", elapsedTime);
                     // TODO: Show failed screen
-                    gg.displayScreen("index", params);
+                    gg.displayScreen("GameOverScreen", params);
                 }
 
                 break;

@@ -35,7 +35,7 @@ public class LevelInfo {
 				0.2, 1.0, 0.05, 0.05, 50, 2);
 		} else if (level == 3) { // Add Level 3 here
 	        info = new LevelInfo(
-	                "media/images/playing/level3landscape 2.png",
+	                "media/images/playing/updatedGroup.png",
 	                new int[] { 150, 350, 520, 720, 902 }, // More lanes for increased difficulty
 	                0.3, 1.5, 0.03, 0.03, 80, 2); // Faster speed, higher density, and more vehicles to pass
 		}

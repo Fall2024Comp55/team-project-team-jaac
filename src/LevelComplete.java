@@ -13,6 +13,7 @@ public class LevelComplete extends Screen {
     private LevelInfo levelInfo;
     private Character character;
     private long completionTimeMs;
+    
 
     private void drawLevelCompleteTitle() {
         gg.add(new GImage("media/images/levelcomplete/LevelCompleteTitle.png", 398, 137));
@@ -38,6 +39,7 @@ public class LevelComplete extends Screen {
 
 		drawBackground();
 		drawEachLevelComplete();
+		drawStars(level);
 		drawLevelCompleteTitle();
 		drawButtons();
 	}
@@ -66,13 +68,13 @@ public class LevelComplete extends Screen {
 		GImage levelimage = null;
 		switch(level) {
 			case 1:
-				levelimage = new GImage("media/images/levelcomplete/complete1.png", imageX, imageY);
+				levelimage = new GImage("media/images/levelcomplete/complete1NoStars.png", imageX, imageY);
 				break;
 			case 2:
-				levelimage = new GImage("media/images/levelcomplete/complete2.png", imageX, imageY);
+				levelimage = new GImage("media/images/levelcomplete/complete2NoStars.png", imageX, imageY);
 				break;
 			case 3:
-				levelimage = new GImage("media/images/levelcomplete/complete3.png", imageX, imageY);
+				levelimage = new GImage("media/images/levelcomplete/complete3NoStars.png", imageX, imageY);
 				break;
 			}
 		
@@ -91,19 +93,42 @@ public class LevelComplete extends Screen {
 			    gg.add(carsPassedLabel);
 		}
 	
-/*	private void drawStars() {
-    	for (int level = 1; level <= 3; level++) {
-    		PlayerData.LevelScore score = PlayerData.getInstance().getBestScore(level);
-    		int light = 0, dark = 0;
-    		if (score == null) {
-    			dark = 6;
-    		} else {
-    			light = score.star;
-    			dark = 6 - light;
-    		}
+	private int calcStars(int level) {
+		int stars = 6; //max number of stars
+		long standardTimeMS; // ideal time to finish to get 6 stars
+		PlayerData.LevelScore score = PlayerData.getInstance().getBestScore(level);
+		
+		if (level == 1) {
+			standardTimeMS = 80000;
+		}
+		else if (level == 2) {
+			standardTimeMS = 30000;
+		}
+		
+		else{
+			standardTimeMS = 20000;
+		}
+		
+		long diff = score.timeMs - standardTimeMS;
+		
+		for (int i= 0; i < 6; i++) { // iterates through diff to see how many multiples of 5s
+									 // the player took to complete the level
+			if(diff >= 2500) {
+				stars--;
+				diff -= 2500;
+			}
+		}
+		
+		return stars;
+	}
+	
+	 private void drawStars(int level) {
+    	
+		 int light = calcStars(level);
+		 int dark = 6 - light;
     		
-    		int y = 202 + (level - 1) * 195;
-    		int x = 564;
+    		int y = 127+210;
+    		int x = 172+225;
     		for (int i = 0; i < light; i++) {
         		gg.add(new GImage("media/images/level/star_light.png", x, y));
         		x += 68;
@@ -113,8 +138,8 @@ public class LevelComplete extends Screen {
         		x += 68;
     		}
     	}
-    }
-*/
+     
+
     private Void BackButtonClicked(Button button)
     {
         gg.displayScreen("index", null);
@@ -164,5 +189,6 @@ public class LevelComplete extends Screen {
 	protected void hide() {
 
 	}
+
 
 }

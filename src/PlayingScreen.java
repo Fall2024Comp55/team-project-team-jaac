@@ -227,7 +227,28 @@ public class PlayingScreen extends Screen implements KeyListener {
               
           }
       }
+      
+      
+      
+   // Helper method to check if a new trap overlaps with any existing vehicle
+      private boolean isTrapOverlappingVehicle(int x, int y, int trapWidth, int trapHeight) {
+          for (Vehicle vehicle : vehicles) {
+              GImage vehicleImage = vehicle.getImage();
+              int vehicleX = (int) vehicleImage.getX();
+              int vehicleY = (int) vehicleImage.getY();
+              int vehicleWidth = (int) vehicleImage.getWidth();
+              int vehicleHeight = (int) vehicleImage.getHeight();
 
+              // Check for intersection between the trap and the vehicle
+              if (x < vehicleX + vehicleWidth &&
+                  x + trapWidth > vehicleX &&
+                  y < vehicleY + vehicleHeight &&
+                  y + trapHeight > vehicleY) {
+                  return true; // Overlap detected
+              }
+          }
+          return false; // No overlap
+      }
 
     private void updateAnimation() {
         long timerDelayMs = System.currentTimeMillis() - lastTimeMs;
@@ -353,18 +374,21 @@ public class PlayingScreen extends Screen implements KeyListener {
         }
         checkLevelComplete();
         
-        //Generate traps
+     // Generate traps
         if (level == 2 || level == 3) {
             for (int i = 0; i < levelInfo.laneX.length; i++) {
                 if (Math.random() < 0.005) { // Adjust probability for trap generation
-                    Trap newTrap = new Trap(
-                        trapImagePath,
-                        levelInfo.laneX[i] - 50, // Center the trap in the lane
-                        (int) (-this.road.getHeight() / levelInfo.density),
-                        i
-                    );
-                    traps.add(newTrap);
-                    this.road.add(newTrap.getImage());
+                    int trapX = levelInfo.laneX[i] - 50; // Center the trap in the lane
+                    int trapY = (int) (-this.road.getHeight() / levelInfo.density);
+                    int trapWidth = 100; // Example trap width, replace with actual size
+                    int trapHeight = 100; // Example trap height, replace with actual size
+
+                    // Check if the new trap overlaps with any vehicle
+                    if (!isTrapOverlappingVehicle(trapX, trapY, trapWidth, trapHeight)) {
+                        Trap newTrap = new Trap(trapImagePath, trapX, trapY, i);
+                        traps.add(newTrap);
+                        this.road.add(newTrap.getImage());
+                    }
                 }
             }
         }

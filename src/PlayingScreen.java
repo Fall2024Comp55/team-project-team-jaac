@@ -454,6 +454,7 @@ public class PlayingScreen extends Screen implements KeyListener {
         return bufferedImage;
     }
     
+    //Fade out effect of traps
     private void createFadeOutEffect(double x, double y) {
         if (trapEffectPath == null) {
             return; // No fade-out effect if path is not set

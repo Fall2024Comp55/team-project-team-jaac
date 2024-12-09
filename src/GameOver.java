@@ -33,7 +33,7 @@ public class GameOver extends Screen {
         background.setSize(1200, 800);
         gg.add(background);
         gg.add(new GImage("media/images/options/StoreRoulette-Base.png", 275, 160));
-        GImage gameOverTitle = new GImage("media/images/GameOver/GameOver Frame.png", 400, 160);
+        GImage gameOverTitle = new GImage("media/images/GameOver/GameOver Frame.png", 400, 140);
         gameOverTitle.setSize(406,60);
         gg.add(gameOverTitle);
         gg.add(new GImage("media/images/GameOver/RedCircle.png", 520, 285));

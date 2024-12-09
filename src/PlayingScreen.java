@@ -11,6 +11,8 @@ import acm.graphics.GObject;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -34,6 +36,7 @@ public class PlayingScreen extends Screen implements KeyListener {
     private int landscapeY;
     private GCanvas road;
     private ArrayList<Vehicle> vehicles;
+    private ArrayList<Trap> traps;
     private int passedVehicleCount;
     private ArrayList<GImage> healthImages;
     private GLabel passedText;
@@ -45,6 +48,9 @@ public class PlayingScreen extends Screen implements KeyListener {
     private int lastLane;
 
     private long abilityStartTimeMs;
+    
+    private String trapImagePath;
+    private String trapEffectPath;
 
 
     @Override
@@ -56,8 +62,21 @@ public class PlayingScreen extends Screen implements KeyListener {
         levelInfo = LevelInfo.build(level);
         characterInfo = new CharacterInfo((Character) params.get("Character"), levelInfo.defaultLane);
         vehicles = new ArrayList<Vehicle>();
+        traps = new ArrayList<>();
         passedVehicleCount = 0;
         lastTakingUpLineStartTimeMs = -1;
+        
+        // Set trap image path based on the level
+        if (level == 2) {
+            trapImagePath = "media/images/playing/Traps/TumbleWeed1.png"; // Trap image for level 2
+        } else if (level == 3) {
+            trapImagePath = "media/images/playing/Traps/RainPuddle2.png"; // Trap image for level 3
+        }
+        if (level == 2) {
+            trapEffectPath = "media/images/playing/Traps/SandEffect2.png"; // Trap image for level 2
+        } else if (level == 3) {
+            trapEffectPath = "media/images/playing/Traps/RainEffect2.png"; // Trap image for level 3
+        }
 
         MusicManager.getInstance().stopMusic(); //stop background music once the player enters gameplay
         drawBackground();
@@ -318,9 +337,53 @@ public class PlayingScreen extends Screen implements KeyListener {
             detectCollision();
         }
         checkLevelComplete();
+        
+        //Generate traps
+        if (level == 2 || level == 3) {
+            for (int i = 0; i < levelInfo.laneX.length; i++) {
+                if (Math.random() < 0.005) { // Adjust probability for trap generation
+                    Trap newTrap = new Trap(
+                        trapImagePath,
+                        levelInfo.laneX[i] - 50, // Center the trap in the lane
+                        (int) (-this.road.getHeight() / levelInfo.density),
+                        i
+                    );
+                    traps.add(newTrap);
+                    this.road.add(newTrap.getImage());
+                }
+            }
+        }
+        
+        //Move traps
+        for (int i = traps.size() - 1; i >= 0; i--) {
+            Trap trap = traps.get(i);
+            trap.move((int) (levelInfo.speed * timerDelayMs));
+            if (trap.getY() > landscape.getHeight() / 2) {
+                this.road.remove(trap.getImage());
+                traps.remove(i);
+            }
+        }
+        
     }
+    
+    
+    
 
     private void detectCollision() {
+    	//trap collision detection
+    	for (int i = traps.size() - 1; i >= 0; i--) {
+            Trap trap = traps.get(i);
+            if (trap.getImage().getBounds().intersects(this.characterImage.getBounds())) {
+                // Trigger fade-out effect
+                createFadeOutEffect(trap.getImage().getX(), trap.getImage().getY());
+
+                // Remove the trap
+                this.road.remove(trap.getImage());
+                traps.remove(i);
+            }
+    	}
+                
+    	
         // collision detection
         int removeIndex = -1;
         for (Vehicle v : vehicles) {
@@ -365,8 +428,70 @@ public class PlayingScreen extends Screen implements KeyListener {
         if (removeIndex >= 0) {
             this.road.remove(vehicles.get(removeIndex).getImage());
             vehicles.remove(removeIndex);
-        }
+        }  
+        
     }
+    
+    private BufferedImage adjustImageAlpha(Image img, double alpha) {
+        // Convert the Image to a BufferedImage
+        BufferedImage bufferedImage = new BufferedImage(
+                img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = bufferedImage.createGraphics();
+        g2d.drawImage(img, 0, 0, null);
+        g2d.dispose();
+
+        // Adjust the alpha for each pixel
+        for (int y = 0; y < bufferedImage.getHeight(); y++) {
+            for (int x = 0; x < bufferedImage.getWidth(); x++) {
+                int argb = bufferedImage.getRGB(x, y);
+                int a = (int) (((argb >> 24) & 0xFF) * alpha); // Scale alpha
+                int rgb = argb & 0xFFFFFF; // Preserve RGB values
+                bufferedImage.setRGB(x, y, (a << 24) | rgb);
+            }
+        }
+
+        return bufferedImage;
+    }
+    
+    private void createFadeOutEffect(double x, double y) {
+        if (trapEffectPath == null) {
+            return; // No fade-out effect if path is not set
+        }
+        
+        // Calculate the center of the screen
+        double centerX = gg.getGCanvas().getWidth() / 2.0;
+        double centerY = gg.getGCanvas().getHeight() / 2.0;
+
+        // Create the fade-out image at the collision location
+        GImage fadeOutImage = new GImage(trapEffectPath, x, y);
+        fadeOutImage.setSize(900, 450);
+        fadeOutImage.setLocation(centerX + 50 - fadeOutImage.getWidth() / 2, centerY -100 - fadeOutImage.getHeight() / 2);
+        this.road.add(fadeOutImage);
+        fadeOutImage.sendToFront();
+        
+
+        // Timer to gradually fade out the image
+        Timer fadeOutTimer = new Timer(50, new ActionListener() {
+            private int fadeStep = 20; // Reduce opacity in steps
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (fadeStep <= 0) {
+                    gg.getGCanvas().remove(fadeOutImage); // Remove the image once it is fully faded
+                    ((Timer) e.getSource()).stop(); // Stop the timer
+                } else {
+                	fadeOutImage.setImage(adjustImageAlpha(fadeOutImage.getImage(), fadeStep / 10.0));
+                    fadeStep--;
+                }
+            }
+        });
+
+        fadeOutTimer.start();
+    }
+    
+    
+    
+    
 
     private void drawBackground() {
         gg.add(new GImage("media/images/playing/bg.png", 0, 0));

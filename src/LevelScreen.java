@@ -49,16 +49,40 @@ public class LevelScreen extends Screen {
 		gg.add((new Button("media/images/level/level3.png", 236, 543)).clicked((Button b) -> { return LevelButtonClicked(b, 3); }));
     }
     
+    private int calcStars(int level) {
+		int stars = 6; //max number of stars
+		long standardTimeMS; // ideal time to finish to get 6 stars
+		PlayerData.LevelScore score = PlayerData.getInstance().getBestScore(level);
+		
+		if (level == 1) {
+			standardTimeMS = 80000;
+		}
+		else if (level == 2) {
+			standardTimeMS = 30000;
+		}
+		
+		else{
+			standardTimeMS = 20000;
+		}
+		
+		long diff = score.timeMs - standardTimeMS;
+		
+		for (int i= 0; i < 6; i++) { // iterates through diff to see how many multiples of 5s
+									 // the player took to complete the level
+			if(diff >= 5000) {
+				stars--;
+				diff -= 5000;
+			}
+		}
+		
+		return stars;
+	}
+    
     private void drawStars() {
     	for (int level = 1; level <= 3; level++) {
-    		PlayerData.LevelScore score = PlayerData.getInstance().getBestScore(level);
-    		int light = 0, dark = 0;
-    		if (score == null) {
-    			dark = 6;
-    		} else {
-    			light = score.star;
-    			dark = 6 - light;
-    		}
+    		
+    		int light = calcStars(level);
+   		 	int dark = 6 - light;
     		
     		int y = 202 + (level - 1) * 195;
     		int x = 564;

@@ -210,6 +210,7 @@ public class PlayingScreen extends Screen implements KeyListener {
               params.put("Character", characterInfo.getCharacter());
               params.put("Time", elapsedTimeMs);
               gg.displayScreen("Complete", params); // `timer.stop();` can be called by this line
+              
           }
       }
 
@@ -598,5 +599,7 @@ public class PlayingScreen extends Screen implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
     }
+
+   
 
 }

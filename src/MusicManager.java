@@ -24,6 +24,8 @@ private MusicManager() {
         e.printStackTrace();
     }
 }
+
+
 public static MusicManager getInstance() {
     if (instance == null) {
         instance = new MusicManager();
@@ -31,16 +33,53 @@ public static MusicManager getInstance() {
     return instance;
 }
 
-public void playMusic() {
-    if (clip != null && !clip.isRunning()) {
+private Clip loadMusic(String filePath) {
+    try {
+        File soundFile = new File(filePath);
+        AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundFile);
+        Clip newClip = AudioSystem.getClip();
+        newClip.open(audioStream);
+
+        return newClip;
+    } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+        e.printStackTrace();
+        return null;
+    }
+}
+
+
+
+private void playMusic(String filePath) {
+    stopMusic(); // Stop any currently playing music
+    clip = loadMusic(filePath);
+    if (clip != null) {
         clip.loop(Clip.LOOP_CONTINUOUSLY);
         clip.start();
+        volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        setVolume(volume); // Apply the current volume setting
     }
+}
+
+public void playMenuMusic() {
+    playMusic("media/Background Music/MenuBackgroundMusic.wav");
+}
+
+public void playLevel1Music() {
+    playMusic("media/Background Music/Jaguar XJ220 - Car Repair Menu Theme [Amiga].wav");
+}
+
+public void playLevel2Music() {
+    playMusic("media/Background Music/EZ Rollers - Breakbeat Generation (Instrumental).wav");
+}
+
+public void playLevel3Music() {
+    playMusic("media/Background Music/Teriyaki Boyz - Tokyo Drift Instrumental.wav");
 }
 
 public void stopMusic() {
     if (clip != null && clip.isRunning()) {
         clip.stop();
+        clip.close();
     }
 }
 

@@ -79,6 +79,20 @@ public class PlayingScreen extends Screen implements KeyListener {
         }
 
         MusicManager.getInstance().stopMusic(); //stop background music once the player enters gameplay
+        switch (level) {
+        case 1:
+            MusicManager.getInstance().playLevel1Music();
+            break;
+        case 2:
+            MusicManager.getInstance().playLevel2Music();
+            break;
+        case 3:
+            MusicManager.getInstance().playLevel3Music();
+            break;
+        default:
+            break;  
+        }
+        
         drawBackground();
         drawButtons();
 
@@ -524,6 +538,8 @@ public class PlayingScreen extends Screen implements KeyListener {
 		if(timer != null) { // if statement added for the timer
 			timer.stop();
 		}
+		
+		MusicManager.getInstance().stopMusic();
 		
 		if (laneChangeTimeText != null) {
 			gg.remove(laneChangeTimeText);
